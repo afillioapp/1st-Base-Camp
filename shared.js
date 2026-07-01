@@ -1,4 +1,4 @@
-/* shared.js — shared tokens, Nav, Footer for all 1BC pages */
+/* shared.js, shared tokens, Nav, Footer for all 1BC pages */
 const T = {
   ivory: '#f2ede4',
   ivory2: '#ede8de',

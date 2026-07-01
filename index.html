@@ -273,7 +273,7 @@ function Hero({ heroBg }) {
         background: 'linear-gradient(to bottom, rgba(26,24,20,0.35) 0%, rgba(26,24,20,0.2) 40%, rgba(26,24,20,0.65) 100%)'
       }}></div>
 
-      {/* Content — pinned to bottom */}
+      {/* Content, pinned to bottom */}
       <div style={{
         position: 'absolute', inset: 0,
         display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
@@ -314,7 +314,7 @@ function Hero({ heroBg }) {
               borderLeft: '2px solid rgba(242,237,228,0.35)', paddingLeft: '28px',
               textShadow: '0 1px 12px rgba(26,24,20,0.3)'
             }}>
-              We are a venture studio crafting innovative startups from the ground up — across Canada, the Middle East, and beyond.
+              We are a venture studio crafting innovative startups from the ground up, across Canada, the Middle East, and beyond.
             </p>
             <div style={{ display: 'flex', gap: '20px', alignItems: 'center', paddingLeft: '30px' }}>
               <a href="#contact" style={{
@@ -463,7 +463,7 @@ function VenturesSection() {
           View all ventures →</a>
       </div>
 
-      {/* Venture grid — fills full width */}
+      {/* Venture grid, fills full width */}
       <div style={{ display: 'grid', gridTemplateColumns: `repeat(${ventures.length}, 1fr)` }}>
         {ventures.map((v, i) =>
         <a key={v.id} href={v.href} style={{
@@ -529,7 +529,7 @@ function ServicesSection() {
             marginBottom: '32px'
           }}>How We<br />Work<br />With You.</h2>
           <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '15px', lineHeight: 1.75, color: T.inkMid, maxWidth: '340px', marginBottom: '40px' }}>
-            Six integrated capabilities, applied as needed. We engage as partners with skin in the game — not retainers.
+            Six integrated capabilities, applied as needed. We engage as partners with skin in the game, not retainers.
           </p>
           <a href="services.html" style={{
             fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
