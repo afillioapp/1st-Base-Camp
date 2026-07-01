@@ -336,25 +336,25 @@ function TracksSection() {
       num: '01', title: 'AI Enablement for Builders & Construction',
       tagline: 'Practical AI adoption for the Canadian construction sector.',
       modules: ['AI Fundamentals for Construction Leaders', 'Estimating & Bid Automation', 'AI-Assisted Project Scheduling & Risk', 'Site Safety & Computer Vision', 'Procurement & Supply-Chain Intelligence', 'Building an AI Adoption Roadmap'],
-      duration: '6 weeks', format: 'Hybrid · Canada',
+      duration: '6 weeks', hours: '24 hours', format: 'Hybrid · Canada',
     },
     {
       num: '02', title: 'Agentic AI & Robotics in Manufacturing',
       tagline: 'Deploying autonomous agents and robotics on the factory floor.',
       modules: ['Foundations of Agentic AI', 'Robotic Process & Physical Automation', 'Human–Robot Collaboration & Safety', 'Predictive Maintenance & Digital Twins', 'Orchestrating Multi-Agent Systems', 'ROI & Scale-Up Strategy'],
-      duration: '8 weeks', format: 'Hybrid · Intensive',
+      duration: '8 weeks', hours: '32 hours', format: 'Hybrid · Intensive',
     },
     {
       num: '03', title: 'Data Governance for SMEs',
       tagline: 'Turning data into a governed, trusted asset for smaller enterprises.',
       modules: ['Data Governance Foundations for SMEs', 'Privacy, PIPEDA & Regulatory Compliance', 'Data Quality & Master Data Management', 'Access, Security & Risk Controls', 'Building a Lightweight Governance Framework', 'From Governance to AI-Readiness'],
-      duration: '5 weeks', format: 'Online · Cohort',
+      duration: '5 weeks', hours: '20 hours', format: 'Online · Cohort',
     },
     {
       num: '04', title: 'Fraud & Misuse Management and Prevention',
       tagline: 'Detecting, managing, and preventing fraud and misuse at scale.',
       modules: ['Fraud Typologies & Threat Landscape', 'AI-Driven Detection & Anomaly Models', 'Transaction Monitoring & Case Management', 'Identity, KYC & Access Misuse', 'Investigations & Response Playbooks', 'Building a Prevention-First Culture'],
-      duration: '6 weeks', format: 'Hybrid',
+      duration: '6 weeks', hours: '24 hours', format: 'Hybrid',
     },
   ];
 
@@ -402,7 +402,7 @@ function TracksSection() {
             ))}
           </div>
           <div style={{ display: 'flex', gap: '40px' }}>
-            {[['Duration', tracks[active].duration], ['Format', tracks[active].format]].map(([k, v]) => (
+            {[['Duration', tracks[active].duration], ['Hours', tracks[active].hours], ['Format', tracks[active].format]].map(([k, v]) => (
               <div key={k}>
                 <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: A.creamLight, marginBottom: '4px' }}>{k}</div>
                 <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '18px', letterSpacing: '0.04em', textTransform: 'uppercase', color: A.cream }}>{v}</div>
