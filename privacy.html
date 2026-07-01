@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — 1st Base Camp</title>
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicons/1bc-favicon-32.png">
+<link rel="apple-touch-icon" href="brand/favicons/1bc-favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #f2ede4; color: #1a1814; font-family: 'Barlow', sans-serif; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: #d4c9b0; }
+  ::-webkit-scrollbar { width: 3px; } ::-webkit-scrollbar-track { background: #f2ede4; } ::-webkit-scrollbar-thumb { background: #c8c0b0; }
+</style>
+</head>
+<body>
+<script type="text/babel" src="shared.js?v=2"></script>
+<script type="text/babel">
+
+function PrivacyPage() {
+  const sections = [
+    {
+      title: 'Information We Collect',
+      body: `We collect information you provide directly to us, such as your name, organization, and email address when you submit an inquiry through our contact form. We may also collect standard web analytics data such as pages visited, time on site, and referral source through third-party tools.`
+    },
+    {
+      title: 'How We Use Your Information',
+      body: `We use the information we collect to respond to your inquiries, evaluate potential partnerships or engagements, and improve our website. We do not sell, rent, or share your personal information with third parties for marketing purposes.`
+    },
+    {
+      title: 'Cookies',
+      body: `Our website may use cookies and similar technologies to improve user experience and gather analytics. You may disable cookies in your browser settings at any time, though some features of the site may not function as intended.`
+    },
+    {
+      title: 'Data Retention',
+      body: `We retain personal information only as long as necessary to fulfill the purposes outlined in this policy or as required by applicable law. Inquiry data submitted through our contact form is retained for a reasonable period to support follow-up communication.`
+    },
+    {
+      title: 'Your Rights',
+      body: `Depending on your jurisdiction, you may have the right to access, correct, or request deletion of your personal information. To exercise any of these rights, contact us at info@firstbasecamp.com and we will respond within a reasonable timeframe.`
+    },
+    {
+      title: 'Third-Party Links',
+      body: `Our website may contain links to third-party websites. We are not responsible for the privacy practices of those sites and encourage you to review their policies independently.`
+    },
+    {
+      title: 'Changes to This Policy',
+      body: `We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated effective date. Continued use of the site after changes constitutes acceptance of the revised policy.`
+    },
+    {
+      title: 'Contact',
+      body: `For any questions regarding this Privacy Policy, contact us at info@firstbasecamp.com or write to us at 99 Yorkville Ave, Unit 200, Toronto, ON M5R 3K5, Canada.`
+    },
+  ];
+
+  return (
+    <>
+      <Nav />
+
+      <section style={{ paddingTop: '60px', background: '#f2ede4' }}>
+        <div style={{ padding: '80px 48px 64px', borderBottom: '1px solid #d4cdc0' }}>
+          <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#b0a898', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ display: 'inline-block', width: '24px', height: '1px', background: '#b0a898' }}></span>
+            Legal
+          </div>
+          <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(48px, 6vw, 88px)', lineHeight: 0.9, letterSpacing: '-0.01em', textTransform: 'uppercase', color: '#1a1814', marginBottom: '24px' }}>
+            Privacy<br />Policy.
+          </h1>
+          <p style={{ fontFamily: "'DM Mono', monospace", fontSize: '11px', letterSpacing: '0.1em', color: '#b0a898' }}>
+            Effective date: July 1, 2026
+          </p>
+        </div>
+
+        <div style={{ maxWidth: '720px', padding: '72px 48px' }}>
+          <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '16px', lineHeight: 1.85, color: '#6b6558', marginBottom: '56px' }}>
+            1st Base Camp Inc. ("we," "us," or "our") operates the website at firstbasecamp.com. This Privacy Policy explains how we collect, use, and protect information when you visit our site or contact us.
+          </p>
+
+          {sections.map((s, i) => (
+            <div key={i} style={{ marginBottom: '48px', paddingBottom: '48px', borderBottom: i < sections.length - 1 ? '1px solid #d4cdc0' : 'none' }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '16px', marginBottom: '16px' }}>
+                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', color: '#b0a898', flexShrink: 0 }}>0{i + 1}</span>
+                <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '22px', letterSpacing: '0.04em', textTransform: 'uppercase', color: '#1a1814' }}>{s.title}</h2>
+              </div>
+              <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '15px', lineHeight: 1.85, color: '#6b6558' }}>{s.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <Footer />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<PrivacyPage />);
+</script>
+<div id="root"></div>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Use — 1st Base Camp</title>
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicons/1bc-favicon-32.png">
+<link rel="apple-touch-icon" href="brand/favicons/1bc-favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #f2ede4; color: #1a1814; font-family: 'Barlow', sans-serif; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: #d4c9b0; }
+  ::-webkit-scrollbar { width: 3px; } ::-webkit-scrollbar-track { background: #f2ede4; } ::-webkit-scrollbar-thumb { background: #c8c0b0; }
+</style>
+</head>
+<body>
+<script type="text/babel" src="shared.js?v=2"></script>
+<script type="text/babel">
+
+function TermsPage() {
+  const sections = [
+    {
+      title: 'Acceptance of Terms',
+      body: `By accessing or using the 1st Base Camp website (firstbasecamp.com), you agree to be bound by these Terms of Use. If you do not agree, please discontinue use of the site immediately.`
+    },
+    {
+      title: 'Use of the Site',
+      body: `This website is provided for informational purposes only. You may not use it for any unlawful purpose, to solicit others to perform unlawful acts, or in any way that could damage, disable, or impair the site or interfere with any other party's use of it.`
+    },
+    {
+      title: 'Intellectual Property',
+      body: `All content on this site, including text, graphics, logos, and images, is the property of 1st Base Camp Inc. or its content partners and is protected by applicable intellectual property laws. You may not reproduce, distribute, or create derivative works without our express written permission.`
+    },
+    {
+      title: 'No Investment Advice',
+      body: `Nothing on this website constitutes investment advice, financial advice, or a solicitation to invest in any venture or fund. Information presented about our portfolio ventures and engagements is for general informational purposes only.`
+    },
+    {
+      title: 'Disclaimer of Warranties',
+      body: `This website is provided on an "as is" and "as available" basis without warranties of any kind, either express or implied. We do not warrant that the site will be uninterrupted, error-free, or free of viruses or other harmful components.`
+    },
+    {
+      title: 'Limitation of Liability',
+      body: `To the fullest extent permitted by law, 1st Base Camp Inc. shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of, or inability to use, this website or its content.`
+    },
+    {
+      title: 'Third-Party Links',
+      body: `Our site may contain links to third-party websites. These links are provided for convenience only. We have no control over the content of those sites and accept no responsibility for them or for any loss or damage that may arise from your use of them.`
+    },
+    {
+      title: 'Governing Law',
+      body: `These Terms of Use are governed by and construed in accordance with the laws of the Province of Ontario and the federal laws of Canada applicable therein, without regard to conflict of law principles.`
+    },
+    {
+      title: 'Changes to These Terms',
+      body: `We reserve the right to update these Terms of Use at any time. Changes will be effective upon posting to this page. Continued use of the site after changes are posted constitutes your acceptance of the revised terms.`
+    },
+    {
+      title: 'Contact',
+      body: `For questions about these Terms of Use, contact us at info@firstbasecamp.com or write to us at 99 Yorkville Ave, Unit 200, Toronto, ON M5R 3K5, Canada.`
+    },
+  ];
+
+  return (
+    <>
+      <Nav />
+
+      <section style={{ paddingTop: '60px', background: '#f2ede4' }}>
+        <div style={{ padding: '80px 48px 64px', borderBottom: '1px solid #d4cdc0' }}>
+          <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#b0a898', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ display: 'inline-block', width: '24px', height: '1px', background: '#b0a898' }}></span>
+            Legal
+          </div>
+          <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(48px, 6vw, 88px)', lineHeight: 0.9, letterSpacing: '-0.01em', textTransform: 'uppercase', color: '#1a1814', marginBottom: '24px' }}>
+            Terms<br />of Use.
+          </h1>
+          <p style={{ fontFamily: "'DM Mono', monospace", fontSize: '11px', letterSpacing: '0.1em', color: '#b0a898' }}>
+            Effective date: July 1, 2026
+          </p>
+        </div>
+
+        <div style={{ maxWidth: '720px', padding: '72px 48px' }}>
+          <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '16px', lineHeight: 1.85, color: '#6b6558', marginBottom: '56px' }}>
+            These Terms of Use govern your access to and use of the 1st Base Camp website. Please read them carefully before using the site.
+          </p>
+
+          {sections.map((s, i) => (
+            <div key={i} style={{ marginBottom: '48px', paddingBottom: '48px', borderBottom: i < sections.length - 1 ? '1px solid #d4cdc0' : 'none' }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '16px', marginBottom: '16px' }}>
+                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', color: '#b0a898', flexShrink: 0 }}>0{i + 1}</span>
+                <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '22px', letterSpacing: '0.04em', textTransform: 'uppercase', color: '#1a1814' }}>{s.title}</h2>
+              </div>
+              <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '15px', lineHeight: 1.85, color: '#6b6558' }}>{s.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <Footer />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<TermsPage />);
+</script>
+<div id="root"></div>
+</body>
+</html>

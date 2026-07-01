@@ -132,7 +132,17 @@ function Footer() {
             >{l}</a>
           ))}
         </div>
-        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.08em', color: 'rgba(242,237,228,0.18)' }}>© {new Date().getFullYear()} First Base Camp</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <a href="privacy.html" style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.08em', color: 'rgba(242,237,228,0.18)', textDecoration: 'none', transition: 'color 0.2s' }}
+            onMouseEnter={e => e.currentTarget.style.color = 'rgba(242,237,228,0.45)'}
+            onMouseLeave={e => e.currentTarget.style.color = 'rgba(242,237,228,0.18)'}
+          >Privacy</a>
+          <a href="terms.html" style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.08em', color: 'rgba(242,237,228,0.18)', textDecoration: 'none', transition: 'color 0.2s' }}
+            onMouseEnter={e => e.currentTarget.style.color = 'rgba(242,237,228,0.45)'}
+            onMouseLeave={e => e.currentTarget.style.color = 'rgba(242,237,228,0.18)'}
+          >Terms</a>
+          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.08em', color: 'rgba(242,237,228,0.18)' }}>© {new Date().getFullYear()} First Base Camp</span>
+        </div>
       </div>
     </footer>
   );
