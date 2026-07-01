@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Services — 1st Base Camp</title>
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicons/1bc-favicon-32.png">
+<link rel="apple-touch-icon" href="brand/favicons/1bc-favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #f2ede4; color: #1a1814; font-family: 'Barlow', sans-serif; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: #d4c9b0; }
+  ::-webkit-scrollbar { width: 3px; } ::-webkit-scrollbar-track { background: #f2ede4; } ::-webkit-scrollbar-thumb { background: #c8c0b0; }
+</style>
+<style id="responsive">
+  /* ── Mobile responsiveness ── */
+  @media (max-width: 900px) {
+    /* nav */
+    nav { padding: 0 20px !important; }
+    nav > div:last-child { display: none !important; }
+    nav > a[href], nav > div:first-child { display: flex !important; }
+
+    /* generic 2-col → 1-col grid */
+    [style*="grid-template-columns: 1fr 1fr"],
+    [style*="gridTemplateColumns: '1fr 1fr'"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(2"],
+    [style*="gridTemplateColumns: 'repeat(2"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(3"],
+    [style*="gridTemplateColumns: 'repeat(3"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(4"],
+    [style*="gridTemplateColumns: 'repeat(4"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    /* hero text size */
+    h1 { font-size: clamp(40px, 10vw, 80px) !important; }
+    h2 { font-size: clamp(32px, 8vw, 64px) !important; }
+    /* section padding */
+    section, footer, nav { padding-left: 20px !important; padding-right: 20px !important; }
+    /* hero full-height on mobile */
+    section[style*="height: 100vh"] { min-height: 560px !important; }
+  }
+
+  @media (max-width: 600px) {
+    [style*="grid-template-columns: repeat(3"],
+    [style*="gridTemplateColumns: 'repeat(3"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(4"],
+    [style*="gridTemplateColumns: 'repeat(4"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    [style*="padding: '72px 48px"],
+    [style*="padding: '80px 48px"],
+    [style*="padding: '120px 80px"],
+    [style*="padding: '64px 48px"] {
+      padding: 40px 20px !important;
+    }
+    /* Horizontal scrollers stay scrollable */
+    .scroller { overflow-x: auto !important; }
+  }
+
+  /* Hamburger mobile nav */
+  .mobile-nav-toggle {
+    display: none;
+  }
+  @media (max-width: 900px) {
+    .mobile-nav-toggle {
+      display: flex !important;
+      flex-direction: column;
+      gap: 5px;
+      padding: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-left: auto;
+    }
+    .mobile-nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: #1a1814;
+    }
+    .mobile-nav-links {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background: rgba(242,237,228,0.98);
+      backdrop-filter: blur(12px);
+      padding: 16px 20px;
+      border-bottom: 1px solid #d4cdc0;
+      flex-direction: column;
+      gap: 0;
+      z-index: 199;
+    }
+    .mobile-nav-links.open {
+      display: flex;
+    }
+    .mobile-nav-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1a1814;
+      padding: 14px 0;
+      border-bottom: 1px solid #d4cdc0;
+      text-decoration: none;
+    }
+    .mobile-nav-links a:last-child { border-bottom: none; }
+  }
+</style>
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+<script type="text/babel" src="shared.js"></script>
+<script type="text/babel">
+const { useState } = React;
+
+const services = [
+  {
+    id: 'incubation', num: '01', title: 'Incubation',
+    tagline: 'End-to-end venture building from concept validation to launch.',
+    overview: 'Our incubation practice is where ventures begin. We work with founders and institutions to validate concepts, define the product, structure the team, and prepare for launch — all with operational skin in the game.',
+    whatWeDoItems: [
+      'Concept validation and market sizing',
+      'Business model design and stress-testing',
+      'Founding team assembly and structuring',
+      'Product definition and MVP specification',
+      'Launch planning and go-to-market preparation',
+    ],
+    forWhom: 'Founders at the idea stage. Institutions seeking to commercialize IP. Operators with domain expertise who need a co-builder.',
+    engagement: 'Co-build partnership with equity participation. We invest time, capital, and operational bandwidth — not advice.',
+  },
+  {
+    id: 'legal', num: '02', title: 'Legal & Corporate Structure',
+    tagline: 'Entity formation, governance, and regulatory compliance across jurisdictions.',
+    overview: 'Cross-border ventures require cross-border legal infrastructure. We structure entities, establish governance frameworks, and ensure regulatory compliance across the jurisdictions our ventures operate in.',
+    whatWeDoItems: [
+      'Jurisdiction selection and entity formation',
+      'Shareholder agreements and governance frameworks',
+      'Cross-border regulatory compliance mapping',
+      'IP structuring and protection',
+      'Compliance monitoring and ongoing advisory',
+    ],
+    forWhom: 'Ventures expanding into new markets. Founders requiring multi-jurisdiction structure. Institutions establishing commercial entities.',
+    engagement: 'Project-based engagement or ongoing retainer, depending on complexity and stage.',
+  },
+  {
+    id: 'advisory', num: '03', title: 'Advisory & Management',
+    tagline: 'Embedded operational leadership at critical growth stages.',
+    overview: 'We provide embedded strategic and operational leadership for ventures at critical inflection points — not as consultants, but as operators with accountability for outcomes.',
+    whatWeDoItems: [
+      'Embedded C-suite and operational leadership',
+      'Strategic planning and execution oversight',
+      'Board advisory and governance support',
+      'Performance frameworks and KPI design',
+      'Crisis management and pivot facilitation',
+    ],
+    forWhom: 'Ventures between leadership transitions. Founders requiring a senior operational partner. Investors seeking hands-on management support.',
+    engagement: 'Embedded engagement with defined scope and accountability. Time-bounded with clear exit criteria.',
+  },
+  {
+    id: 'technical', num: '04', title: 'Technical Outsourcing',
+    tagline: 'Curated engineering and product teams aligned to your venture.',
+    overview: 'We source, vet, and integrate technical talent — engineering, product, and data — aligned to the specific needs of each venture. Not a staffing service; a curated talent network with operational integration.',
+    whatWeDoItems: [
+      'Technical team assembly and vetting',
+      'Engineering leadership and CTO advisory',
+      'Product management and roadmap support',
+      'Quality assurance and technical audits',
+      'Vendor and technology partner selection',
+    ],
+    forWhom: 'Ventures requiring technical capability without the overhead of full-time hiring. Founders with domain expertise but limited technical background.',
+    engagement: 'Modular engagement — from a single senior hire to a full technical function. Scales up or down with venture needs.',
+  },
+  {
+    id: 'sales', num: '05', title: 'Channel & Sales Enablement',
+    tagline: 'Go-to-market strategy, channel partnerships, and revenue acceleration.',
+    overview: 'We design and execute go-to-market strategies, build channel partnerships, and establish the sales infrastructure that converts market presence into revenue.',
+    whatWeDoItems: [
+      'Go-to-market strategy and playbook development',
+      'Channel partner identification and activation',
+      'Sales process design and tooling',
+      'Revenue operations and pipeline management',
+      'Customer success frameworks',
+    ],
+    forWhom: 'Ventures entering a new market or scaling revenue in an existing one. Founders with strong product but limited commercial infrastructure.',
+    engagement: 'Project-based engagement for strategy and setup. Ongoing advisory for execution support.',
+  },
+  {
+    id: 'market-entry', num: '06', title: 'New Market Entry',
+    tagline: 'Cross-border expansion playbooks for Americas and MENA.',
+    overview: 'We specialize in the Americas-MENA corridor. Our market entry practice provides the on-the-ground intelligence, regulatory navigation, and partnership activation that makes cross-border expansion viable.',
+    whatWeDoItems: [
+      'Market feasibility and entry strategy',
+      'Regulatory and compliance landscape mapping',
+      'Local partnership and distributor identification',
+      'Government and institutional stakeholder engagement',
+      'Market presence establishment and activation',
+    ],
+    forWhom: 'Companies expanding from Americas into MENA, or vice versa. Institutions seeking regional market intelligence. Ventures requiring a local partner with on-the-ground presence.',
+    engagement: 'Phased engagement aligned to the Ignition → Elevation → Expansion model. We stay in as long as needed.',
+  },
+];
+
+function ServiceDetailPage() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id') || 'incubation';
+  const currentIdx = services.findIndex(s => s.id === id);
+  const s = services[currentIdx] || services[0];
+  const prev = services[currentIdx - 1];
+  const next = services[currentIdx + 1];
+
+  return (
+    <>
+      <Nav activePage="Services" />
+
+      {/* Header */}
+      <section style={{ paddingTop: '60px', background: T.ivory }}>
+        <div style={{ padding: '48px 48px 0', borderBottom: `1px solid ${T.border}` }}>
+          {/* Breadcrumb */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '48px' }}>
+            <a href="index.html#services" style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: T.inkLight, transition: 'color 0.2s' }}
+              onMouseEnter={e => e.currentTarget.style.color = T.ink}
+              onMouseLeave={e => e.currentTarget.style.color = T.inkLight}
+            >← Services</a>
+            <span style={{ color: T.border }}>/</span>
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: T.inkLight }}>{s.title}</span>
+          </div>
+
+          {/* Title block */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'end', paddingBottom: '56px' }}>
+            <div>
+              <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', color: T.inkLight, marginBottom: '16px' }}>{s.num} / 06</div>
+              <h1 style={{
+                fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900,
+                fontSize: 'clamp(56px, 8vw, 96px)', lineHeight: 0.9,
+                letterSpacing: '-0.01em', textTransform: 'uppercase', color: T.ink, marginBottom: '20px',
+              }}>{s.title}</h1>
+              <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '20px', color: T.inkMid, lineHeight: 1.5, maxWidth: '480px' }}>{s.tagline}</p>
+            </div>
+            {/* Service nav */}
+            <div style={{ paddingBottom: '8px' }}>
+              <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: T.inkLight, marginBottom: '16px' }}>All Services</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                {services.map(sv => (
+                  <a key={sv.id} href={`service-detail.html?id=${sv.id}`} style={{
+                    fontFamily: "'Barlow Condensed', sans-serif", fontWeight: sv.id === s.id ? 700 : 500,
+                    fontSize: '16px', letterSpacing: '0.06em', textTransform: 'uppercase',
+                    color: sv.id === s.id ? T.ink : T.inkLight,
+                    borderLeft: `2px solid ${sv.id === s.id ? T.ink : 'transparent'}`,
+                    paddingLeft: '12px', paddingTop: '4px', paddingBottom: '4px',
+                    transition: 'all 0.2s', display: 'block',
+                  }}
+                    onMouseEnter={e => { e.currentTarget.style.color = T.ink; e.currentTarget.style.borderLeftColor = T.border; }}
+                    onMouseLeave={e => { e.currentTarget.style.color = sv.id === s.id ? T.ink : T.inkLight; e.currentTarget.style.borderLeftColor = sv.id === s.id ? T.ink : 'transparent'; }}
+                  >{sv.num} {sv.title}</a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Photo band */}
+        <div style={{ height: '36vw', maxHeight: '440px', overflow: 'hidden', position: 'relative' }}>
+          <img src="uploads/photo_9.jpg" alt=""
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 25%', filter: 'grayscale(30%) brightness(0.85)' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 50%, rgba(26,24,20,0.4) 100%)' }}></div>
+        </div>
+      </section>
+
+      {/* Overview */}
+      <section style={{ background: T.ivory, borderBottom: `1px solid ${T.border}` }}>
+        <div style={{ padding: '72px 48px', borderBottom: `1px solid ${T.border}` }}>
+          <Label>Overview</Label>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px' }}>
+            <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '18px', lineHeight: 1.85, color: T.inkMid }}>{s.overview}</p>
+            <div></div>
+          </div>
+        </div>
+
+        {/* What we do + For whom */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+          <div style={{ padding: '64px 48px', borderRight: `1px solid ${T.border}` }}>
+            <Label>Scope</Label>
+            <h3 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '32px', letterSpacing: '0.02em', textTransform: 'uppercase', color: T.ink, marginBottom: '32px' }}>What we do.</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+              {s.whatWeDoItems.map((item, i) => (
+                <div key={i} style={{
+                  padding: '16px 0',
+                  borderBottom: i < s.whatWeDoItems.length - 1 ? `1px solid ${T.border}` : 'none',
+                  display: 'flex', gap: '16px', alignItems: 'flex-start',
+                }}>
+                  <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', color: T.inkLight, marginTop: '3px', flexShrink: 0 }}>0{i + 1}</span>
+                  <span style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 400, fontSize: '15px', lineHeight: 1.6, color: T.ink }}>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div style={{ padding: '64px 48px' }}>
+            <div style={{ marginBottom: '48px' }}>
+              <Label>Fit</Label>
+              <h3 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '32px', letterSpacing: '0.02em', textTransform: 'uppercase', color: T.ink, marginBottom: '20px' }}>Who this is for.</h3>
+              <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '15px', lineHeight: 1.85, color: T.inkMid }}>{s.forWhom}</p>
+            </div>
+            <div style={{ borderTop: `1px solid ${T.border}`, paddingTop: '40px' }}>
+              <Label>Structure</Label>
+              <h3 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '32px', letterSpacing: '0.02em', textTransform: 'uppercase', color: T.ink, marginBottom: '20px' }}>How we engage.</h3>
+              <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '15px', lineHeight: 1.85, color: T.inkMid }}>{s.engagement}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Prev / Next service navigation */}
+      <section style={{ background: T.ivory2, borderBottom: `1px solid ${T.border}` }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+          {prev ? (
+            <a href={`service-detail.html?id=${prev.id}`} style={{
+              padding: '40px 48px', borderRight: `1px solid ${T.border}`,
+              display: 'flex', flexDirection: 'column', gap: '8px',
+              transition: 'background 0.2s', cursor: 'pointer',
+            }}
+              onMouseEnter={e => e.currentTarget.style.background = T.ivory}
+              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+            >
+              <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.12em', color: T.inkLight }}>← Previous</span>
+              <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '24px', letterSpacing: '0.04em', textTransform: 'uppercase', color: T.ink }}>{prev.title}</span>
+            </a>
+          ) : <div style={{ borderRight: `1px solid ${T.border}` }}></div>}
+          {next ? (
+            <a href={`service-detail.html?id=${next.id}`} style={{
+              padding: '40px 48px',
+              display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-end',
+              transition: 'background 0.2s', cursor: 'pointer',
+            }}
+              onMouseEnter={e => e.currentTarget.style.background = T.ivory}
+              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+            >
+              <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.12em', color: T.inkLight }}>Next →</span>
+              <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '24px', letterSpacing: '0.04em', textTransform: 'uppercase', color: T.ink }}>{next.title}</span>
+            </a>
+          ) : <div></div>}
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section style={{ background: T.ink, padding: '80px 48px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <Label light>Next step</Label>
+            <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: 0.92, letterSpacing: '-0.01em', textTransform: 'uppercase', color: '#f2ede4' }}>Ready to discuss<br />your situation?</h2>
+          </div>
+          <a href="index.html#contact" style={{
+            fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '13px', letterSpacing: '0.14em', textTransform: 'uppercase',
+            border: '1px solid rgba(242,237,228,0.4)', color: '#f2ede4', padding: '14px 28px',
+            transition: 'all 0.2s', display: 'inline-block', flexShrink: 0,
+          }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#f2ede4'; e.currentTarget.style.color = T.ink; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#f2ede4'; }}
+          >Start a conversation</a>
+        </div>
+      </section>
+
+      <Footer />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<ServiceDetailPage />);
+</script>
+<div id="root"></div>
+
+<script>
+(function() {
+  // Inject hamburger toggle once DOM is ready
+  function initMobileNav() {
+    var nav = document.querySelector('nav');
+    if (!nav || nav.dataset.mobileInit) return;
+    nav.dataset.mobileInit = '1';
+    var links = nav.querySelector('div:last-child');
+    if (!links) return;
+    links.classList.add('mobile-nav-links');
+    var btn = document.createElement('button');
+    btn.className = 'mobile-nav-toggle';
+    btn.setAttribute('aria-label', 'Menu');
+    btn.innerHTML = '<span></span><span></span><span></span>';
+    btn.addEventListener('click', function() {
+      links.classList.toggle('open');
+    });
+    // insert button before the links div
+    nav.insertBefore(btn, links);
+    // close on link click
+    links.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() { links.classList.remove('open'); });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(initMobileNav, 800); });
+  } else {
+    setTimeout(initMobileNav, 800);
+  }
+})();
+</script>
+
+<script src="mobile-nav.js"></script>
+</body>
+</html>

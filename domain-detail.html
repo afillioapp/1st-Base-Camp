@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Domain — 1st Base Camp</title>
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicons/1bc-favicon-32.png">
+<link rel="apple-touch-icon" href="brand/favicons/1bc-favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #f2ede4; color: #1a1814; font-family: 'Barlow', sans-serif; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: #d4c9b0; }
+  ::-webkit-scrollbar { width: 3px; } ::-webkit-scrollbar-track { background: #f2ede4; } ::-webkit-scrollbar-thumb { background: #c8c0b0; }
+
+  /* ASCII art overlay — monospace grid */
+  .ascii-overlay {
+    position: absolute; inset: 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    line-height: 1.0;
+    color: rgba(242, 237, 228, 0.42);
+    white-space: pre;
+    overflow: hidden;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    letter-spacing: 0;
+    padding: 24px;
+    user-select: none;
+  }
+</style>
+<style id="responsive">
+  /* ── Mobile responsiveness ── */
+  @media (max-width: 900px) {
+    /* nav */
+    nav { padding: 0 20px !important; }
+    nav > div:last-child { display: none !important; }
+    nav > a[href], nav > div:first-child { display: flex !important; }
+
+    /* generic 2-col → 1-col grid */
+    [style*="grid-template-columns: 1fr 1fr"],
+    [style*="gridTemplateColumns: '1fr 1fr'"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(2"],
+    [style*="gridTemplateColumns: 'repeat(2"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(3"],
+    [style*="gridTemplateColumns: 'repeat(3"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(4"],
+    [style*="gridTemplateColumns: 'repeat(4"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    /* hero text size */
+    h1 { font-size: clamp(40px, 10vw, 80px) !important; }
+    h2 { font-size: clamp(32px, 8vw, 64px) !important; }
+    /* section padding */
+    section, footer, nav { padding-left: 20px !important; padding-right: 20px !important; }
+    /* hero full-height on mobile */
+    section[style*="height: 100vh"] { min-height: 560px !important; }
+  }
+
+  @media (max-width: 600px) {
+    [style*="grid-template-columns: repeat(3"],
+    [style*="gridTemplateColumns: 'repeat(3"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(4"],
+    [style*="gridTemplateColumns: 'repeat(4"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    [style*="padding: '72px 48px"],
+    [style*="padding: '80px 48px"],
+    [style*="padding: '120px 80px"],
+    [style*="padding: '64px 48px"] {
+      padding: 40px 20px !important;
+    }
+    /* Horizontal scrollers stay scrollable */
+    .scroller { overflow-x: auto !important; }
+  }
+
+  /* Hamburger mobile nav */
+  .mobile-nav-toggle {
+    display: none;
+  }
+  @media (max-width: 900px) {
+    .mobile-nav-toggle {
+      display: flex !important;
+      flex-direction: column;
+      gap: 5px;
+      padding: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-left: auto;
+    }
+    .mobile-nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: #1a1814;
+    }
+    .mobile-nav-links {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background: rgba(242,237,228,0.98);
+      backdrop-filter: blur(12px);
+      padding: 16px 20px;
+      border-bottom: 1px solid #d4cdc0;
+      flex-direction: column;
+      gap: 0;
+      z-index: 199;
+    }
+    .mobile-nav-links.open {
+      display: flex;
+    }
+    .mobile-nav-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1a1814;
+      padding: 14px 0;
+      border-bottom: 1px solid #d4cdc0;
+      text-decoration: none;
+    }
+    .mobile-nav-links a:last-child { border-bottom: none; }
+  }
+</style>
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+<script src="insights-data.js"></script>
+<script type="text/babel" src="shared.js"></script>
+<script type="text/babel">
+const { useState, useEffect, useMemo } = React;
+
+/* ── Domain data ── */
+const DomainIcons = {
+  fintech: ({ size = 64, color = '#1a1814' }) => (
+    <svg width={size} height={size} viewBox="0 0 64 64" fill="none">
+      <circle cx="22" cy="32" r="14" stroke={color} strokeWidth="1.2" />
+      <circle cx="42" cy="32" r="14" stroke={color} strokeWidth="1.2" />
+    </svg>
+  ),
+  blockchain: ({ size = 64, color = '#1a1814' }) => (
+    <svg width={size} height={size} viewBox="0 0 64 64" fill="none">
+      <rect x="10" y="14" width="18" height="18" stroke={color} strokeWidth="1.2" />
+      <rect x="36" y="14" width="18" height="18" stroke={color} strokeWidth="1.2" />
+      <rect x="23" y="32" width="18" height="18" stroke={color} strokeWidth="1.2" />
+      <line x1="28" y1="23" x2="36" y2="23" stroke={color} strokeWidth="1.2" />
+    </svg>
+  ),
+  ai: ({ size = 64, color = '#1a1814' }) => (
+    <svg width={size} height={size} viewBox="0 0 64 64" fill="none">
+      {[[14, 18], [14, 32], [14, 46], [32, 25], [32, 39], [50, 32]].map(([cx, cy], i) => (
+        <circle key={i} cx={cx} cy={cy} r="2.5" fill={color} />
+      ))}
+      <path d="M14 18 L32 25 M14 32 L32 25 M14 32 L32 39 M14 46 L32 39 M32 25 L50 32 M32 39 L50 32" stroke={color} strokeWidth="0.8" opacity="0.5" />
+    </svg>
+  ),
+  foodtech: ({ size = 64, color = '#1a1814' }) => (
+    <svg width={size} height={size} viewBox="0 0 64 64" fill="none">
+      <path d="M32 12 C 24 22 22 32 22 42 C 22 50 27 54 32 54 C 37 54 42 50 42 42 C 42 32 40 22 32 12 Z" stroke={color} strokeWidth="1.2" fill="none" />
+      <path d="M32 18 L32 52" stroke={color} strokeWidth="0.9" opacity="0.5" />
+    </svg>
+  ),
+  healthtech: ({ size = 64, color = '#1a1814' }) => (
+    <svg width={size} height={size} viewBox="0 0 64 64" fill="none">
+      <path d="M8 32 L18 32 L22 22 L28 42 L34 26 L40 36 L44 32 L56 32" stroke={color} strokeWidth="1.4" fill="none" strokeLinejoin="round" />
+      <circle cx="56" cy="32" r="2.5" fill={color} />
+    </svg>
+  ),
+  commerce: ({ size = 64, color = '#1a1814' }) => (
+    <svg width={size} height={size} viewBox="0 0 64 64" fill="none">
+      <rect x="14" y="22" width="36" height="30" stroke={color} strokeWidth="1.2" />
+      <path d="M22 22 C 22 16 26 12 32 12 C 38 12 42 16 42 22" stroke={color} strokeWidth="1.2" fill="none" />
+    </svg>
+  ),
+  market: ({ size = 64, color = '#1a1814' }) => (
+    <svg width={size} height={size} viewBox="0 0 64 64" fill="none">
+      <circle cx="32" cy="32" r="20" stroke={color} strokeWidth="1.2" />
+      <ellipse cx="32" cy="32" rx="20" ry="8" stroke={color} strokeWidth="1" opacity="0.6" />
+      <ellipse cx="32" cy="32" rx="8" ry="20" stroke={color} strokeWidth="1" opacity="0.6" />
+    </svg>
+  ),
+};
+
+const domainsData = {
+  fintech: {
+    name: 'FinTech & Credit Infrastructure',
+    short: 'FinTech',
+    eyebrow: 'Domain 01',
+    body: `Financial infrastructure is the silent backbone of modern economies — and the most underbuilt layer in the markets we operate across. Our involvement in FinTech is not opportunistic. It comes from years of operational work alongside banks, regulators, and growth-stage operators in Toronto and Dubai, where we have seen first-hand how outdated rails, fragmented compliance, and capital opacity throttle otherwise viable ventures.\n\nWe focus on credit infrastructure, cross-border payment rails, and the compliance layer that determines whether a venture can scale across jurisdictions or remain trapped in one. We co-build ventures with founders who understand that financial software is not a feature — it is the platform other businesses run on. Our partnerships span institutional banks, regulators, and academic researchers who together set the bar for what serious financial infrastructure must look like.\n\nWe stay close to ventures here because the work is operational, not theoretical. Compliance frameworks change. Banking relationships are forged in person. Distribution requires patience and presence. This is where co-builders, not advisors, make the difference.`,
+    ventures: ['venture-credit', 'venture-payments'],
+    posts: [1, 2],
+  },
+  blockchain: {
+    name: 'Blockchain, Web3 & Digital Assets',
+    short: 'Web3',
+    eyebrow: 'Domain 02',
+    body: `The next decade of digital asset infrastructure will be built inside regulated frameworks — not against them. Our position in Web3 reflects this conviction. We work with founders who treat tokenization and digital assets as serious financial primitives, not speculative instruments, and who are willing to do the deep operational work required to ship inside regulatory perimeters.\n\nWe focus on institutional-grade tokenization platforms, asset infrastructure for regulated markets, and decentralized systems that solve real coordination problems. The MENA region in particular is positioning itself as a regulated hub for digital assets, and we co-build with ventures that can take advantage of that opening with the right legal, technical, and partnership scaffolding.\n\nOur approach combines deep technical capability with a posture of regulatory cooperation. We build with compliance officers, banking partners, and institutional investors in the room from day one. This is not a domain where speed substitutes for soundness. The ventures that endure will be those built with both.`,
+    ventures: ['venture-chain'],
+    posts: [4, 5],
+  },
+  ai: {
+    name: 'Applied AI & Data Infrastructure',
+    short: 'AI & Data',
+    eyebrow: 'Domain 03',
+    body: `Most AI ventures are products in search of a problem. We invest our time in the opposite: applied AI grounded in operator workflows, with data infrastructure that turns models into reliable production systems. The headline frontier is exciting, but the durable value sits one layer down — in vertical models, evaluation pipelines, and the data plumbing that lets organizations actually deploy AI in regulated and consequential settings.\n\nWe co-build ventures that target real operators in real industries, where AI must integrate with existing systems, comply with existing regulations, and earn trust through measurable outcomes. Our advantage is operational: we have built and managed production systems, partnered with research institutions, and worked alongside enterprise buyers who know what works and what does not.\n\nThis domain rewards patience and rigor. Hype cycles compress. Infrastructure decisions compound. We focus on ventures whose value increases the longer they operate — because they have the right data flywheels, the right architecture, and the right institutional partnerships from the start.`,
+    ventures: ['venture-ai-ops', 'venture-signal'],
+    posts: [1, 4],
+  },
+  foodtech: {
+    name: 'FoodTech',
+    short: 'FoodTech',
+    eyebrow: 'Domain 04',
+    body: `Food systems in the regions we operate are uniquely strained — and uniquely positioned for ventures that can build resilience from the ground up. Our FoodTech work focuses on sustainable supply chains, alternative proteins, and farm-to-market platforms that address real food security and trade-balance questions in MENA and beyond.\n\nWe co-build ventures with founders who understand agriculture and distribution as deeply operational disciplines, not just technology categories. Government partnerships matter. Distribution networks matter. Cold-chain capability matters. We bring on-the-ground presence and institutional relationships that allow ventures to navigate these realities credibly.\n\nThe ventures we back here are positioned where global capability meets regional need. Our role is to make those crossings viable — through infrastructure, partnerships, and the operational presence that lets ventures actually deliver, not just announce.`,
+    ventures: ['venture-grain'],
+    posts: [2, 5],
+  },
+  healthtech: {
+    name: 'HealthTech, Cosmeceuticals & Longevity',
+    short: 'HealthTech',
+    eyebrow: 'Domain 05',
+    body: `Health is among the highest-trust domains a venture can operate in — which is why we approach it with corresponding rigor. Our work spans digital health platforms for underserved regional markets, science-led cosmeceutical brands with clinical grounding, and longevity ventures backed by serious institutional research rather than wellness narratives.\n\nWe co-build alongside clinicians, scientists, and regulatory operators. Every venture in this domain must be defensible on clinical, regulatory, and commercial axes simultaneously. We bring the operational scaffolding to make that possible: regulatory navigation, channel partnerships with healthcare systems, and the patience required for evidence-based positioning.\n\nThe MENA region in particular represents a generational opportunity for health infrastructure that is digital-first, science-rigorous, and built for populations whose needs differ from those of North American or European markets. Our ventures here are positioned to serve those populations credibly, with institutional alignment from day one.`,
+    ventures: ['venture-clinic', 'venture-cosmo'],
+    posts: [3, 6],
+  },
+  commerce: {
+    name: 'Digital Commerce & Social Retail',
+    short: 'Commerce',
+    eyebrow: 'Domain 06',
+    body: `Commerce is undergoing its second rebuild — this time around social platforms, creator economies, and the localized retail experiences that consumers in MENA and other emerging markets actually expect. Our work in this domain focuses on the infrastructure and consumer ventures that make modern, cross-border commerce viable.\n\nWe co-build with founders who understand that retail is fundamentally an operational discipline: payments, fulfillment, customer service, and local trust. Software is a layer over those fundamentals, not a substitute for them. The most interesting ventures here combine deep regional knowledge with global product capability — and our role is to make that combination operational.\n\nWe focus on ventures expanding in either direction across the Americas-MENA corridor, where consumer behavior, payment infrastructure, and regulatory environments differ enough to make on-the-ground partnership decisive. Software alone does not win these markets. Operators do.`,
+    ventures: ['venture-shelf'],
+    posts: [3, 6],
+  },
+  market: {
+    name: 'Market Expansion & Venture Enablement',
+    short: 'Market Expansion',
+    eyebrow: 'Domain 07',
+    body: `Market expansion is the domain where everything we do meets the road. For companies expanding from Americas into MENA or vice versa, the difference between credible entry and stalled rollout is operational — not strategic. Decks do not open accounts. Operators do.\n\nOur enablement work combines on-the-ground market intelligence, regulatory navigation, partnership activation, and the actual operational presence that lets a venture establish itself in a new region. We have built and dismantled enough market-entry programs to know which combinations work and which look good only on paper.\n\nWe stay in this domain because it is structurally undervalued. Companies that need market entry typically pay for advice; we sell results, with skin in the game. The ventures we back here are themselves expansion-as-a-service platforms, helping the next wave of operators cross borders the way we have helped the current one.`,
+    ventures: ['venture-gateway'],
+    posts: [2, 4],
+  },
+};
+
+/* ── Ventures (mirror from index page) ── */
+const REAL_VENTURES = [
+  { id: 'ascent', name: 'ASCENT', href: 'ascent/index.html', logo: 'brand/ascent/ascent-horizontal-ink.png' },
+  { id: 'altisnexis', name: 'AltisNexsys', href: 'ventures.html?domain=ai', logo: 'brand/ventures/altisnexis-black.png' },
+  { id: 'beaulogica', name: 'Beaulogica', href: 'ventures.html?domain=ai', wordmark: true },
+  { id: 'pistacio', name: 'Pistac.io', href: 'ventures.html?domain=fintech', logo: 'brand/ventures/pistacio-black.png' },
+];
+const ALL_VENTURES = {
+  'venture-credit': { name: 'Venture / Credit', domain: 'fintech' },
+  'venture-payments': { name: 'Venture / Payments', domain: 'fintech' },
+  'venture-chain': { name: 'Venture / Chain', domain: 'blockchain' },
+  'venture-ai-ops': { name: 'Venture / AI Ops', domain: 'ai' },
+  'venture-signal': { name: 'Venture / Signal', domain: 'ai' },
+  'venture-grain': { name: 'Venture / Grain', domain: 'foodtech' },
+  'venture-clinic': { name: 'Venture / Clinic', domain: 'healthtech' },
+  'venture-cosmo': { name: 'Venture / Cosmo', domain: 'healthtech' },
+  'venture-shelf': { name: 'Venture / Shelf', domain: 'commerce' },
+  'venture-gateway': { name: 'Venture / Gateway', domain: 'market' },
+};
+
+/* ── Blog posts (mirror from insights) ── */
+const ALL_POSTS = {
+  1: { tag: 'Framework', title: 'The Camp Zero Thesis: Why market entry fails before it begins', date: 'Mar 2025', readTime: '6 min' },
+  2: { tag: 'Briefing', title: 'MENA to Americas: Regulatory corridors every founder must map', date: 'Feb 2025', readTime: '8 min' },
+  3: { tag: 'Article', title: 'Co-building vs. advisory: A structural comparison for growth-stage founders', date: 'Jan 2025', readTime: '5 min' },
+  4: { tag: 'Framework', title: 'Institutional credibility as a competitive advantage in new markets', date: 'Dec 2024', readTime: '7 min' },
+  5: { tag: 'Briefing', title: 'The ASCENT model: Building operator-grade capabilities at scale', date: 'Nov 2024', readTime: '5 min' },
+  6: { tag: 'Article', title: 'Domain expertise as a partnership signal', date: 'Oct 2024', readTime: '4 min' },
+};
+
+/* ── ASCII art generator — generates a topographic-style ASCII pattern ── */
+function useAsciiArt(seed = 0, rows = 36, cols = 110) {
+  return useMemo(() => {
+    const chars = ' ·.·:-=+*#%@';
+    let out = '';
+    for (let r = 0; r < rows; r++) {
+      let line = '';
+      for (let c = 0; c < cols; c++) {
+        // Layered sine waves create flowing topographic feel
+        const v =
+          Math.sin((c + seed * 3) * 0.08) * 0.5 +
+          Math.sin((r + seed * 2) * 0.15 + c * 0.03) * 0.3 +
+          Math.cos((c - r) * 0.04 + seed) * 0.2;
+        const t = (v + 1) / 2; // 0..1
+        const idx = Math.max(0, Math.min(chars.length - 1, Math.floor(t * chars.length)));
+        line += chars[idx];
+      }
+      out += line + '\n';
+    }
+    return out;
+  }, [seed, rows, cols]);
+}
+
+/* ── Hero with photo + ASCII overlay ── */
+function DomainHero({ domain, seed }) {
+  const ascii = useAsciiArt(seed);
+  const Icon = DomainIcons[domain.id];
+
+  return (
+    <section style={{ paddingTop: '60px' }}>
+      <div style={{ position: 'relative', height: '60vw', maxHeight: '640px', overflow: 'hidden' }}>
+        {/* Photo */}
+        <img src="uploads/john-towner.jpg" alt=""
+          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 45%', filter: 'brightness(0.78) contrast(1.05)' }} />
+
+        {/* Dark fill */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(26,24,20,0.45) 0%, rgba(26,24,20,0.25) 40%, rgba(26,24,20,0.85) 100%)' }}></div>
+
+        {/* ASCII art overlay layer */}
+        <pre className="ascii-overlay">{ascii}</pre>
+
+        {/* Hero content */}
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '40px 48px' }}>
+          {/* Top: breadcrumb */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+            <a href="index.html" aria-label="1st Base Camp — home" style={{ display: 'flex', alignItems: 'center' }}>
+              <img src="brand/1bc-logo-horizontal-cream.png" alt="1st Base Camp" style={{ height: '18px', width: 'auto', display: 'block' }} />
+            </a>
+            <span style={{ width: '1px', height: '16px', background: 'rgba(242,237,228,0.25)', display: 'inline-block' }}></span>
+            <a href="domains.html" style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(242,237,228,0.55)', transition: 'color 0.2s' }}
+              onMouseEnter={e => e.currentTarget.style.color = '#f2ede4'}
+              onMouseLeave={e => e.currentTarget.style.color = 'rgba(242,237,228,0.55)'}
+            >← Domains</a>
+            <span style={{ color: 'rgba(242,237,228,0.25)' }}>/</span>
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(242,237,228,0.55)' }}>{domain.short}</span>
+          </div>
+
+          {/* Bottom: title + icon */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', alignItems: 'flex-end', gap: '40px' }}>
+            <div>
+              <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(242,237,228,0.55)', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ width: '24px', height: '1px', background: 'rgba(242,237,228,0.4)', display: 'inline-block' }}></span>
+                {domain.eyebrow}
+              </div>
+              <h1 style={{
+                fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900,
+                fontSize: 'clamp(48px, 8vw, 120px)', lineHeight: 0.9,
+                letterSpacing: '-0.01em', textTransform: 'uppercase', color: '#f2ede4',
+                textShadow: '0 2px 24px rgba(26,24,20,0.4)', textWrap: 'pretty',
+              }}>{domain.name}</h1>
+            </div>
+            <div style={{ flexShrink: 0, padding: '24px', border: '1px solid rgba(242,237,228,0.25)', background: 'rgba(26,24,20,0.35)', backdropFilter: 'blur(6px)' }}>
+              {Icon ? <Icon size={88} color="#f2ede4" /> : null}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Body text section ── */
+function DomainBody({ domain }) {
+  const paragraphs = domain.body.split('\n\n');
+  return (
+    <section style={{ background: T.ivory, borderBottom: `1px solid ${T.border}` }}>
+      <div style={{ padding: '80px 48px', display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '80px' }}>
+        <div>
+          <Label>Our perspective</Label>
+          <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(32px, 4vw, 52px)', lineHeight: 0.95, letterSpacing: '-0.01em', textTransform: 'uppercase', color: T.ink }}>
+            Why we<br />operate here.
+          </h2>
+        </div>
+        <div>
+          {paragraphs.map((p, i) => (
+            <p key={i} style={{
+              fontFamily: "'Barlow', sans-serif", fontWeight: 300,
+              fontSize: i === 0 ? '20px' : '17px',
+              lineHeight: 1.75, color: T.inkMid,
+              marginBottom: i < paragraphs.length - 1 ? '24px' : 0,
+              textWrap: 'pretty',
+            }}>{p}</p>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Ventures list ── */
+function DomainVentures({ domain }) {
+  const ventureIds = domain.ventures || [];
+  return (
+    <section style={{ background: T.ivory2, borderBottom: `1px solid ${T.border}` }}>
+      <div style={{ padding: '64px 48px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <div>
+          <Label>Portfolio</Label>
+          <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(32px, 4vw, 52px)', lineHeight: 0.95, letterSpacing: '-0.01em', textTransform: 'uppercase', color: T.ink }}>
+            Ventures in this domain.
+          </h2>
+        </div>
+        <a href={`ventures.html?domain=${domain.id}`} style={{
+          fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 600,
+          fontSize: '12px', letterSpacing: '0.14em', textTransform: 'uppercase',
+          color: T.inkMid, borderBottom: `1px solid ${T.border}`, paddingBottom: '3px',
+          transition: 'color 0.2s',
+        }}
+          onMouseEnter={e => e.currentTarget.style.color = T.ink}
+          onMouseLeave={e => e.currentTarget.style.color = T.inkMid}
+        >View detailed list →</a>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: `repeat(${REAL_VENTURES.length}, 1fr)`, borderTop: `1px solid ${T.border}` }}>
+        {REAL_VENTURES.map((v, i) => (
+          <a key={v.id} href={v.href} style={{
+            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+            minHeight: '220px',
+            borderRight: i < REAL_VENTURES.length - 1 ? `1px solid ${T.border}` : 'none',
+            padding: '40px 32px',
+            cursor: 'pointer', transition: 'background 0.2s',
+            textDecoration: 'none',
+          }}
+            onMouseEnter={e => e.currentTarget.style.background = T.ivory}
+            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+          >
+            <div style={{ height: '72px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              {v.logo ? (
+                <img src={v.logo} alt={v.name} style={{ maxHeight: '52px', maxWidth: '170px', width: 'auto', objectFit: 'contain' }} />
+              ) : (
+                <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '34px', letterSpacing: '0.01em', color: T.ink, lineHeight: 1 }}>{v.name}</span>
+              )}
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ── Blog posts ── */
+const DOMAIN_TAGS = { fintech: 'FinTech', blockchain: 'FinTech', ai: 'AI & Data', foodtech: 'FoodTech', healthtech: 'HealthTech', commerce: 'Commerce', market: 'Manifesto' };
+function DomainPosts({ domain }) {
+  const all = window.INSIGHTS || [];
+  const tag = DOMAIN_TAGS[domain.id] || 'Manifesto';
+  let picks = all.filter(p => p.tag === tag);
+  if (picks.length < 2) picks = picks.concat(all.filter(p => p.tag !== tag));
+  picks = picks.slice(0, 2);
+  const photos = [
+    'uploads/gerrit-vermeulen.jpg',
+    'uploads/connor-mcsheffrey.jpg',
+    'uploads/anders-jilden.jpg',
+  ];
+  return (
+    <section style={{ background: T.ivory, borderBottom: `1px solid ${T.border}` }}>
+      <div style={{ padding: '64px 48px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <div>
+          <Label>Insights</Label>
+          <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(32px, 4vw, 52px)', lineHeight: 0.95, letterSpacing: '-0.01em', textTransform: 'uppercase', color: T.ink }}>
+            Relevant<br />reading.
+          </h2>
+        </div>
+        <a href="insights.html" style={{
+          fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 600,
+          fontSize: '12px', letterSpacing: '0.14em', textTransform: 'uppercase',
+          color: T.inkMid, borderBottom: `1px solid ${T.border}`, paddingBottom: '3px',
+          transition: 'color 0.2s',
+        }}
+          onMouseEnter={e => e.currentTarget.style.color = T.ink}
+          onMouseLeave={e => e.currentTarget.style.color = T.inkMid}
+        >All insights →</a>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1px', background: T.border, padding: '32px 48px 64px' }}>
+        {picks.map((p, idx) => {
+          const photo = photos[idx % photos.length];
+          return (
+            <a key={p.slug} href={`insight-detail.html?slug=${p.slug}`} style={{
+              display: 'grid', gridTemplateColumns: '200px 1fr', gap: '0',
+              background: T.ivory,
+              cursor: 'pointer', transition: 'background 0.2s',
+              textDecoration: 'none',
+            }}
+              onMouseEnter={e => e.currentTarget.style.background = T.ivory2}
+              onMouseLeave={e => e.currentTarget.style.background = T.ivory}
+            >
+              <div style={{ position: 'relative', height: '100%', minHeight: '180px', overflow: 'hidden' }}>
+                <img src={photo} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(15%)' }} />
+              </div>
+              <div style={{ padding: '28px 32px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '14px' }}>
+                    <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: T.accent }}>{p.tag}</span>
+                    <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', color: T.inkLight }}>{p.readTime} read</span>
+                  </div>
+                  <h3 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '20px', letterSpacing: '0.02em', textTransform: 'uppercase', lineHeight: 1.15, color: T.ink, marginBottom: '12px', textWrap: 'pretty' }}>{p.title}</h3>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', color: T.inkLight, letterSpacing: '0.1em' }}>{p.date}</span>
+                  <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: T.inkLight }}>Read →</span>
+                </div>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+/* ── Main page ── */
+function DomainDetailPage() {
+  const id = (() => {
+    try {
+      const p = new URLSearchParams(window.location.search);
+      return p.get('id') || 'fintech';
+    } catch (e) { return 'fintech'; }
+  })();
+  const domain = domainsData[id] || domainsData.fintech;
+  const seed = Object.keys(domainsData).indexOf(id);
+
+  return (
+    <>
+      <Nav activePage="Domains" />
+      <DomainHero domain={{ ...domain, id }} seed={seed} />
+      <DomainBody domain={domain} />
+      <DomainVentures domain={{ ...domain, id }} />
+      <DomainPosts domain={{ ...domain, id }} />
+
+      {/* CTA */}
+      <section style={{ background: T.ink, padding: '80px 48px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <Label light>Co-build with us</Label>
+            <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(36px, 4.5vw, 56px)', lineHeight: 0.95, letterSpacing: '-0.01em', textTransform: 'uppercase', color: '#f2ede4' }}>Have a venture in<br />{domain.short}?</h2>
+          </div>
+          <a href="index.html#contact" style={{
+            fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '13px', letterSpacing: '0.14em', textTransform: 'uppercase',
+            border: '1px solid rgba(242,237,228,0.4)', color: '#f2ede4', padding: '14px 28px',
+            transition: 'all 0.2s', display: 'inline-block', flexShrink: 0,
+          }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#f2ede4'; e.currentTarget.style.color = T.ink; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#f2ede4'; }}
+          >Start a conversation</a>
+        </div>
+      </section>
+
+      <Footer />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<DomainDetailPage />);
+</script>
+<div id="root"></div>
+
+<script>
+(function() {
+  // Inject hamburger toggle once DOM is ready
+  function initMobileNav() {
+    var nav = document.querySelector('nav');
+    if (!nav || nav.dataset.mobileInit) return;
+    nav.dataset.mobileInit = '1';
+    var links = nav.querySelector('div:last-child');
+    if (!links) return;
+    links.classList.add('mobile-nav-links');
+    var btn = document.createElement('button');
+    btn.className = 'mobile-nav-toggle';
+    btn.setAttribute('aria-label', 'Menu');
+    btn.innerHTML = '<span></span><span></span><span></span>';
+    btn.addEventListener('click', function() {
+      links.classList.toggle('open');
+    });
+    // insert button before the links div
+    nav.insertBefore(btn, links);
+    // close on link click
+    links.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() { links.classList.remove('open'); });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(initMobileNav, 800); });
+  } else {
+    setTimeout(initMobileNav, 800);
+  }
+})();
+</script>
+
+<script src="mobile-nav.js"></script>
+</body>
+</html>

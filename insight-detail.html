@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insight — 1st Base Camp</title>
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicons/1bc-favicon-32.png">
+<link rel="apple-touch-icon" href="brand/favicons/1bc-favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #f2ede4; color: #1a1814; font-family: 'Barlow', sans-serif; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: #d4c9b0; }
+  ::-webkit-scrollbar { width: 3px; } ::-webkit-scrollbar-track { background: #f2ede4; } ::-webkit-scrollbar-thumb { background: #c8c0b0; }
+
+  /* Article typography */
+  .article h2 { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: clamp(26px, 3vw, 36px); letter-spacing: 0.01em; text-transform: uppercase; line-height: 1.05; color: #1a1814; margin: 48px 0 18px; }
+  .article h3 { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: 0.02em; text-transform: uppercase; color: #1a1814; margin: 36px 0 14px; }
+  .article h4 { font-family: 'Barlow', sans-serif; font-weight: 500; font-size: 17px; color: #1a1814; margin: 28px 0 10px; }
+  .article p { font-family: 'Barlow', sans-serif; font-weight: 300; font-size: 18px; line-height: 1.8; color: #4a463e; margin: 0 0 22px; text-wrap: pretty; }
+  .article li { font-family: 'Barlow', sans-serif; font-weight: 300; font-size: 18px; line-height: 1.7; color: #4a463e; margin: 0 0 10px 22px; }
+  .article strong { font-weight: 500; color: #1a1814; }
+  .article a { color: #b85c2a; border-bottom: 1px solid rgba(184,92,42,0.3); }
+  .article > p:first-of-type { font-size: 21px; color: #2a2620; }
+</style>
+<style id="responsive">
+  /* ── Mobile responsiveness ── */
+  @media (max-width: 900px) {
+    /* nav */
+    nav { padding: 0 20px !important; }
+    nav > div:last-child { display: none !important; }
+    nav > a[href], nav > div:first-child { display: flex !important; }
+
+    /* generic 2-col → 1-col grid */
+    [style*="grid-template-columns: 1fr 1fr"],
+    [style*="gridTemplateColumns: '1fr 1fr'"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(2"],
+    [style*="gridTemplateColumns: 'repeat(2"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(3"],
+    [style*="gridTemplateColumns: 'repeat(3"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(4"],
+    [style*="gridTemplateColumns: 'repeat(4"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    /* hero text size */
+    h1 { font-size: clamp(40px, 10vw, 80px) !important; }
+    h2 { font-size: clamp(32px, 8vw, 64px) !important; }
+    /* section padding */
+    section, footer, nav { padding-left: 20px !important; padding-right: 20px !important; }
+    /* hero full-height on mobile */
+    section[style*="height: 100vh"] { min-height: 560px !important; }
+  }
+
+  @media (max-width: 600px) {
+    [style*="grid-template-columns: repeat(3"],
+    [style*="gridTemplateColumns: 'repeat(3"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(4"],
+    [style*="gridTemplateColumns: 'repeat(4"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    [style*="padding: '72px 48px"],
+    [style*="padding: '80px 48px"],
+    [style*="padding: '120px 80px"],
+    [style*="padding: '64px 48px"] {
+      padding: 40px 20px !important;
+    }
+    /* Horizontal scrollers stay scrollable */
+    .scroller { overflow-x: auto !important; }
+  }
+
+  /* Hamburger mobile nav */
+  .mobile-nav-toggle {
+    display: none;
+  }
+  @media (max-width: 900px) {
+    .mobile-nav-toggle {
+      display: flex !important;
+      flex-direction: column;
+      gap: 5px;
+      padding: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-left: auto;
+    }
+    .mobile-nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: #1a1814;
+    }
+    .mobile-nav-links {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background: rgba(242,237,228,0.98);
+      backdrop-filter: blur(12px);
+      padding: 16px 20px;
+      border-bottom: 1px solid #d4cdc0;
+      flex-direction: column;
+      gap: 0;
+      z-index: 199;
+    }
+    .mobile-nav-links.open {
+      display: flex;
+    }
+    .mobile-nav-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1a1814;
+      padding: 14px 0;
+      border-bottom: 1px solid #d4cdc0;
+      text-decoration: none;
+    }
+    .mobile-nav-links a:last-child { border-bottom: none; }
+  }
+</style>
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+<script src="insights-data.js"></script>
+<script type="text/babel" src="shared.js"></script>
+<script type="text/babel">
+const posts = window.INSIGHTS || [];
+
+function ArticlePage() {
+  const slug = (() => { try { return new URLSearchParams(location.search).get('slug'); } catch(e){ return null; } })();
+  const post = posts.find(p => p.slug === slug) || posts[0];
+  const related = posts.filter(p => p.slug !== post.slug && p.tag === post.tag).slice(0, 3);
+  const fallback = posts.filter(p => p.slug !== post.slug).slice(0, 3);
+  const recs = related.length ? related : fallback;
+
+  return (
+    <>
+      <Nav activePage="Insights" />
+
+      {/* Article header */}
+      <section style={{ paddingTop: '60px', background: T.ink }}>
+        <div style={{ padding: '64px 48px 56px', maxWidth: '960px', margin: '0 auto' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '40px' }}>
+            <a href="insights.html" style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(242,237,228,0.5)' }}>← Insights</a>
+            <span style={{ color: 'rgba(242,237,228,0.25)' }}>/</span>
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: T.accent }}>{post.tag}</span>
+          </div>
+          <h1 style={{
+            fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900,
+            fontSize: 'clamp(40px, 6vw, 76px)', lineHeight: 0.95,
+            letterSpacing: '-0.01em', textTransform: 'uppercase', color: '#f2ede4',
+            marginBottom: '28px', textWrap: 'pretty',
+          }}>{post.title}</h1>
+          <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '19px', lineHeight: 1.7, color: 'rgba(242,237,228,0.7)', maxWidth: '720px', marginBottom: '36px' }}>{post.excerpt}</p>
+          <div style={{ display: 'flex', gap: '28px', paddingTop: '24px', borderTop: '1px solid rgba(242,237,228,0.12)' }}>
+            {[['Published', post.date], ['Read time', post.readTime], ['Category', post.category]].map(([k, v]) => (
+              <div key={k}>
+                <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(242,237,228,0.35)', marginBottom: '5px' }}>{k}</div>
+                <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 600, fontSize: '15px', letterSpacing: '0.03em', textTransform: 'uppercase', color: '#f2ede4' }}>{v}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Article body */}
+      <section style={{ background: T.ivory, borderBottom: `1px solid ${T.border}` }}>
+        <div className="article" style={{ maxWidth: '760px', margin: '0 auto', padding: '72px 48px 88px' }}
+          dangerouslySetInnerHTML={{ __html: post.html }} />
+      </section>
+
+      {/* Related */}
+      <section style={{ background: T.ivory2, borderBottom: `1px solid ${T.border}` }}>
+        <div style={{ padding: '64px 48px 32px' }}>
+          <Label>Continue reading</Label>
+          <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(32px, 4vw, 52px)', lineHeight: 0.95, letterSpacing: '-0.01em', textTransform: 'uppercase', color: T.ink }}>Related insights.</h2>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
+          {recs.map((p, i) => (
+            <a key={p.slug} href={`insight-detail.html?slug=${p.slug}`} style={{
+              padding: '40px 48px',
+              borderRight: i < recs.length - 1 ? `1px solid ${T.border}` : 'none',
+              borderTop: `1px solid ${T.border}`,
+              cursor: 'pointer', transition: 'background 0.2s', textDecoration: 'none',
+              display: 'flex', flexDirection: 'column',
+            }}
+              onMouseEnter={e => e.currentTarget.style.background = T.ivory}
+              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: T.accent }}>{p.tag}</span>
+                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', color: T.inkLight }}>{p.readTime}</span>
+              </div>
+              <h3 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '20px', letterSpacing: '0.02em', textTransform: 'uppercase', lineHeight: 1.15, color: T.ink, marginBottom: '16px', textWrap: 'pretty' }}>{p.title}</h3>
+              <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: T.inkLight, marginTop: 'auto' }}>Read →</span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <Footer />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<ArticlePage />);
+</script>
+<div id="root"></div>
+
+<script>
+(function() {
+  // Inject hamburger toggle once DOM is ready
+  function initMobileNav() {
+    var nav = document.querySelector('nav');
+    if (!nav || nav.dataset.mobileInit) return;
+    nav.dataset.mobileInit = '1';
+    var links = nav.querySelector('div:last-child');
+    if (!links) return;
+    links.classList.add('mobile-nav-links');
+    var btn = document.createElement('button');
+    btn.className = 'mobile-nav-toggle';
+    btn.setAttribute('aria-label', 'Menu');
+    btn.innerHTML = '<span></span><span></span><span></span>';
+    btn.addEventListener('click', function() {
+      links.classList.toggle('open');
+    });
+    // insert button before the links div
+    nav.insertBefore(btn, links);
+    // close on link click
+    links.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() { links.classList.remove('open'); });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(initMobileNav, 800); });
+  } else {
+    setTimeout(initMobileNav, 800);
+  }
+})();
+</script>
+
+<script src="mobile-nav.js"></script>
+</body>
+</html>

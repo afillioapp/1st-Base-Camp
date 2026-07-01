@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — 1st Base Camp</title>
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicons/1bc-favicon-32.png">
+<link rel="apple-touch-icon" href="brand/favicons/1bc-favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #f2ede4; color: #1a1814; font-family: 'Barlow', sans-serif; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: #d4c9b0; }
+  ::-webkit-scrollbar { width: 3px; } ::-webkit-scrollbar-track { background: #f2ede4; } ::-webkit-scrollbar-thumb { background: #c8c0b0; }
+</style>
+<style id="responsive">
+  /* ── Mobile responsiveness ── */
+  @media (max-width: 900px) {
+    /* nav */
+    nav { padding: 0 20px !important; }
+    nav > div:last-child { display: none !important; }
+    nav > a[href], nav > div:first-child { display: flex !important; }
+
+    /* generic 2-col → 1-col grid */
+    [style*="grid-template-columns: 1fr 1fr"],
+    [style*="gridTemplateColumns: '1fr 1fr'"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(2"],
+    [style*="gridTemplateColumns: 'repeat(2"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(3"],
+    [style*="gridTemplateColumns: 'repeat(3"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(4"],
+    [style*="gridTemplateColumns: 'repeat(4"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    /* hero text size */
+    h1 { font-size: clamp(40px, 10vw, 80px) !important; }
+    h2 { font-size: clamp(32px, 8vw, 64px) !important; }
+    /* section padding */
+    section, footer, nav { padding-left: 20px !important; padding-right: 20px !important; }
+    /* hero full-height on mobile */
+    section[style*="height: 100vh"] { min-height: 560px !important; }
+  }
+
+  @media (max-width: 600px) {
+    [style*="grid-template-columns: repeat(3"],
+    [style*="gridTemplateColumns: 'repeat(3"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(4"],
+    [style*="gridTemplateColumns: 'repeat(4"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    [style*="padding: '72px 48px"],
+    [style*="padding: '80px 48px"],
+    [style*="padding: '120px 80px"],
+    [style*="padding: '64px 48px"] {
+      padding: 40px 20px !important;
+    }
+    /* Horizontal scrollers stay scrollable */
+    .scroller { overflow-x: auto !important; }
+  }
+
+  /* Hamburger mobile nav */
+  .mobile-nav-toggle {
+    display: none;
+  }
+  @media (max-width: 900px) {
+    .mobile-nav-toggle {
+      display: flex !important;
+      flex-direction: column;
+      gap: 5px;
+      padding: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-left: auto;
+    }
+    .mobile-nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: #1a1814;
+    }
+    .mobile-nav-links {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background: rgba(242,237,228,0.98);
+      backdrop-filter: blur(12px);
+      padding: 16px 20px;
+      border-bottom: 1px solid #d4cdc0;
+      flex-direction: column;
+      gap: 0;
+      z-index: 199;
+    }
+    .mobile-nav-links.open {
+      display: flex;
+    }
+    .mobile-nav-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1a1814;
+      padding: 14px 0;
+      border-bottom: 1px solid #d4cdc0;
+      text-decoration: none;
+    }
+    .mobile-nav-links a:last-child { border-bottom: none; }
+  }
+</style>
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+<script type="text/babel" src="shared.js"></script>
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+function AboutPage() {
+  const values = [
+    { num: '01', title: 'Operators First', desc: 'We build and operate. Our credibility comes from running ventures, not advising on them.' },
+    { num: '02', title: 'Institutional Standards', desc: 'We hold ourselves to the standards of the institutions we partner with — rigorous, measured, and accountable.' },
+    { num: '03', title: 'Domain Affiliation', desc: 'Every engagement draws on affiliated expertise across training, academia, technology, and market development.' },
+    { num: '04', title: 'Global Professionalism', desc: 'Dual presence in Toronto and Dubai. Two regions, one operating standard, zero compromise on quality.' },
+  ];
+
+  const team = [
+    { name: 'Hessam Motahari', role: 'CEO — Principal Consultant', linkedin: 'https://linkedin.com/in/hessammotahari' },
+    { name: 'Alireza Motahari', role: 'Digital Strategist', linkedin: 'https://www.linkedin.com/in/reza-motari' },
+  ];
+
+  return (
+    <>
+      <Nav activePage="About" />
+
+      {/* Page hero */}
+      <section style={{ paddingTop: '60px', background: T.ivory }}>
+        <div style={{ padding: '80px 48px 64px', borderBottom: `1px solid ${T.border}`, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'end' }}>
+          <div>
+            <Label>About</Label>
+            <h1 style={{
+              fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900,
+              fontSize: 'clamp(60px, 8vw, 104px)', lineHeight: 0.9,
+              letterSpacing: '-0.01em', textTransform: 'uppercase', color: T.ink,
+            }}>The Quiet<br />Force Behind<br />Bold Ventures.</h1>
+          </div>
+          <div style={{ paddingBottom: '8px' }}>
+            <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '18px', lineHeight: 1.8, color: T.inkMid, borderLeft: `2px solid ${T.border}`, paddingLeft: '28px' }}>
+              We are a venture studio crafting innovative startups from the ground up — across Canada, the Middle East, and beyond.
+            </p>
+          </div>
+        </div>
+
+        {/* Full-bleed photo */}
+        <div style={{ height: '50vw', maxHeight: '600px', overflow: 'hidden' }}>
+          <img src="uploads/arto-marttinen.jpg" alt="Mountain landscape with lone climber"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%', display: 'block' }} />
+        </div>
+      </section>
+
+      {/* Our story */}
+      <section style={{ background: T.ivory, borderBottom: `1px solid ${T.border}` }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', borderBottom: `1px solid ${T.border}` }}>
+          <div style={{ padding: '72px 48px', borderRight: `1px solid ${T.border}` }}>
+            <Label>Origin</Label>
+            <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: 0.92, letterSpacing: '-0.01em', textTransform: 'uppercase', color: T.ink, marginBottom: '32px' }}>Where the<br />idea began.</h2>
+            <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '15px', lineHeight: 1.85, color: T.inkMid, marginBottom: '20px' }}>
+              1st Base Camp was founded on a conviction: we don't chase trends — we build movements. We act as co-founders, not consultants. We believe ventures should be launched with purpose, discipline, and scale in mind.
+            </p>
+            <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '15px', lineHeight: 1.85, color: T.inkMid }}>
+              The gap between a credible idea and a functioning venture is operational, not conceptual. Most ventures fail not because the idea is wrong, but because execution — structure, team, market access — is missing or misaligned. We built First Base Camp to close that gap.
+            </p>
+          </div>
+          <div style={{ padding: '72px 48px' }}>
+            <Label>Philosophy</Label>
+            <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: 0.92, letterSpacing: '-0.01em', textTransform: 'uppercase', color: T.ink, marginBottom: '32px' }}>We are<br />operators,<br />not advisors.</h2>
+            <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '15px', lineHeight: 1.85, color: T.inkMid, marginBottom: '20px' }}>
+              We act as co-founders, not consultants. When we engage with a venture, we commit capital, bandwidth, and accountability — not slide decks and frameworks. The difference matters.
+            </p>
+            <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '15px', lineHeight: 1.85, color: T.inkMid }}>
+              We explore ideas through market research, validation, and early-stage prototyping. We bring ventures to life — from branding and product development to legal structure and GTM readiness.
+            </p>
+          </div>
+        </div>
+
+        {/* How we work */}
+        <div style={{ padding: '72px 48px', borderBottom: `1px solid ${T.border}` }}>
+          <Label>Approach</Label>
+          <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: 0.92, letterSpacing: '-0.01em', textTransform: 'uppercase', color: T.ink, marginBottom: '56px' }}>How We Work.</h2>
+          {/* Timeline */}
+          <div style={{ marginBottom: '40px', position: 'relative' }}>
+            <div style={{ height: '1px', background: T.ink, position: 'relative' }}>
+              {[0, 33.3, 66.6, 100].map((pct, i) => (
+                <div key={i} style={{ position: 'absolute', left: `${pct}%`, top: '-4px', width: '1px', height: '8px', background: T.ink, transform: 'translateX(-50%)' }}></div>
+              ))}
+              <svg style={{ position: 'absolute', right: '-2px', top: '-7px' }} width="16" height="14" viewBox="0 0 16 14" fill="none">
+                <polygon points="0,0 16,7 0,14" fill={T.ink} />
+              </svg>
+            </div>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0' }}>
+            {[
+              { num: '01', label: 'Ignition', desc: 'Validate concept, structure entity, assemble founding team. Strategy and execution from day one.' },
+              { num: '02', label: 'Elevation', desc: 'Build product, enter market, generate early traction. We operate as co-founders, not consultants.' },
+              { num: '03', label: 'Expansion', desc: 'Cross-border growth across Americas and MENA. Channels, partnerships, permanent market presence.' },
+            ].map((s, i) => (
+              <div key={i} style={{ paddingRight: i < 2 ? '48px' : '0', borderRight: i < 2 ? `1px solid ${T.border}` : 'none', paddingLeft: i > 0 ? '48px' : '0' }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', marginBottom: '12px' }}>
+                  <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', color: T.inkLight }}>{s.num}</span>
+                  <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '26px', letterSpacing: '0.04em', textTransform: 'uppercase', color: T.ink }}>{s.label}</span>
+                </div>
+                <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '14px', lineHeight: 1.75, color: T.inkMid }}>{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Values */}
+      <section style={{ background: T.ivory2, borderBottom: `1px solid ${T.border}` }}>
+        <div style={{ padding: '72px 48px 48px', borderBottom: `1px solid ${T.border}` }}>
+          <Label>Principles</Label>
+          <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: 0.92, letterSpacing: '-0.01em', textTransform: 'uppercase', color: T.ink }}>What We<br />Stand For.</h2>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
+          {values.map((v, i) => (
+            <div key={i} style={{
+              padding: '48px 40px',
+              borderRight: i < values.length - 1 ? `1px solid ${T.border}` : 'none',
+              transition: 'background 0.2s', cursor: 'default',
+            }}
+              onMouseEnter={e => e.currentTarget.style.background = T.ivory}
+              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+            >
+              <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', color: T.inkLight, marginBottom: '20px' }}>{v.num}</div>
+              <h3 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '22px', letterSpacing: '0.04em', textTransform: 'uppercase', color: T.ink, marginBottom: '12px' }}>{v.title}</h3>
+              <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '13px', lineHeight: 1.75, color: T.inkMid }}>{v.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Team */}
+      <section style={{ background: T.ivory, borderBottom: `1px solid ${T.border}` }}>
+        <div style={{ padding: '72px 48px 48px', borderBottom: `1px solid ${T.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+          <div>
+            <Label>People</Label>
+            <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: 0.92, letterSpacing: '-0.01em', textTransform: 'uppercase', color: T.ink }}>The Team.</h2>
+          </div>
+          <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '14px', color: T.inkMid, maxWidth: '280px', textAlign: 'right' }}>Operators, domain experts, and institutional partners — working as one.</p>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${team.length}, 1fr)` }}>
+          {team.map((m, i) => (
+            <div key={i} style={{
+              padding: '48px 40px',
+              borderRight: i < team.length - 1 ? `1px solid ${T.border}` : 'none',
+              borderBottom: `1px solid ${T.border}`,
+              display: 'flex', flexDirection: 'column', minHeight: '180px',
+            }}>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '22px', letterSpacing: '0.03em', textTransform: 'uppercase', color: T.ink, marginBottom: '8px', lineHeight: 1.05 }}>{m.name}</div>
+                <div style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '14px', color: T.inkMid }}>{m.role}</div>
+              </div>
+              {m.linkedin ? (
+                <a href={m.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${m.name} on LinkedIn`} style={{
+                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                  width: '34px', height: '34px', border: `1px solid ${T.border}`,
+                  marginTop: '24px', transition: 'background 0.2s, border-color 0.2s',
+                }}
+                  onMouseEnter={e => { e.currentTarget.style.background = T.ink; e.currentTarget.style.borderColor = T.ink; e.currentTarget.querySelector('svg').style.fill = T.ivory; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = T.border; e.currentTarget.querySelector('svg').style.fill = T.ink; }}
+                >
+                  <svg width="15" height="15" viewBox="0 0 24 24" style={{ fill: T.ink, transition: 'fill 0.2s' }}>
+                    <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S.02 4.88.02 3.5C.02 2.12 1.13 1 2.5 1s2.48 1.12 2.48 2.5zM.25 8h4.5v15.5H.25V8zm7.5 0h4.32v2.12h.06c.6-1.14 2.07-2.34 4.26-2.34 4.56 0 5.4 3 5.4 6.9v8.82h-4.5v-7.82c0-1.86-.03-4.26-2.6-4.26-2.6 0-3 2.03-3 4.13v7.95h-4.5V8z"/>
+                  </svg>
+                </a>
+              ) : (
+                <div style={{ marginTop: '24px', fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: T.inkLight }}>—</div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section style={{ background: T.ink, padding: '80px 48px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <Label light>Next step</Label>
+            <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: 0.92, letterSpacing: '-0.01em', textTransform: 'uppercase', color: '#f2ede4' }}>Ready to explore<br />a partnership?</h2>
+          </div>
+          <div style={{ display: 'flex', gap: '16px', flexShrink: 0 }}>
+            <a href="index.html#contact" style={{
+              fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '13px', letterSpacing: '0.14em', textTransform: 'uppercase',
+              border: '1px solid rgba(242,237,228,0.4)', color: '#f2ede4', padding: '14px 28px',
+              transition: 'all 0.2s', display: 'inline-block',
+            }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#f2ede4'; e.currentTarget.style.color = T.ink; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#f2ede4'; }}
+            >Start a conversation</a>
+            <a href="ventures.html" style={{
+              fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 500, fontSize: '13px', letterSpacing: '0.12em', textTransform: 'uppercase',
+              color: 'rgba(242,237,228,0.45)', borderBottom: '1px solid rgba(242,237,228,0.2)', paddingBottom: '3px',
+              display: 'inline-flex', alignItems: 'center',
+            }}
+              onMouseEnter={e => e.currentTarget.style.color = '#f2ede4'}
+              onMouseLeave={e => e.currentTarget.style.color = 'rgba(242,237,228,0.45)'}
+            >View our ventures →</a>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<AboutPage />);
+</script>
+<div id="root"></div>
+
+<script>
+(function() {
+  // Inject hamburger toggle once DOM is ready
+  function initMobileNav() {
+    var nav = document.querySelector('nav');
+    if (!nav || nav.dataset.mobileInit) return;
+    nav.dataset.mobileInit = '1';
+    var links = nav.querySelector('div:last-child');
+    if (!links) return;
+    links.classList.add('mobile-nav-links');
+    var btn = document.createElement('button');
+    btn.className = 'mobile-nav-toggle';
+    btn.setAttribute('aria-label', 'Menu');
+    btn.innerHTML = '<span></span><span></span><span></span>';
+    btn.addEventListener('click', function() {
+      links.classList.toggle('open');
+    });
+    // insert button before the links div
+    nav.insertBefore(btn, links);
+    // close on link click
+    links.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() { links.classList.remove('open'); });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(initMobileNav, 800); });
+  } else {
+    setTimeout(initMobileNav, 800);
+  }
+})();
+</script>
+
+<script src="mobile-nav.js"></script>
+</body>
+</html>

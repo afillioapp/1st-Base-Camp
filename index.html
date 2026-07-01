@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1st Base Camp</title>
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicons/1bc-favicon-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="brand/favicons/1bc-favicon-512.png">
+<link rel="apple-touch-icon" href="brand/favicons/1bc-favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: #f2ede4;
+    color: #1a1814;
+    font-family: 'Barlow', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: #d4c9b0; }
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: #f2ede4; }
+  ::-webkit-scrollbar-thumb { background: #c8c0b0; }
+  .scroller::-webkit-scrollbar { height: 3px; }
+  .scroller::-webkit-scrollbar-track { background: #f2ede4; }
+  .scroller::-webkit-scrollbar-thumb { background: #d4cdc0; }
+</style>
+<style id="responsive">
+  /* ── Mobile responsiveness ── */
+  @media (max-width: 900px) {
+    /* nav */
+    nav { padding: 0 20px !important; }
+    nav > div:last-child { display: none !important; }
+    nav > a[href], nav > div:first-child { display: flex !important; }
+
+    /* generic 2-col → 1-col grid */
+    [style*="grid-template-columns: 1fr 1fr"],
+    [style*="gridTemplateColumns: '1fr 1fr'"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(2"],
+    [style*="gridTemplateColumns: 'repeat(2"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(3"],
+    [style*="gridTemplateColumns: 'repeat(3"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(4"],
+    [style*="gridTemplateColumns: 'repeat(4"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    /* hero text size */
+    h1 { font-size: clamp(40px, 10vw, 80px) !important; }
+    h2 { font-size: clamp(32px, 8vw, 64px) !important; }
+    /* section padding */
+    section, footer, nav { padding-left: 20px !important; padding-right: 20px !important; }
+    /* hero full-height on mobile */
+    section[style*="height: 100vh"] { min-height: 560px !important; }
+  }
+
+  @media (max-width: 600px) {
+    [style*="grid-template-columns: repeat(3"],
+    [style*="gridTemplateColumns: 'repeat(3"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(4"],
+    [style*="gridTemplateColumns: 'repeat(4"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    [style*="padding: '72px 48px"],
+    [style*="padding: '80px 48px"],
+    [style*="padding: '120px 80px"],
+    [style*="padding: '64px 48px"] {
+      padding: 40px 20px !important;
+    }
+    /* Horizontal scrollers stay scrollable */
+    .scroller { overflow-x: auto !important; }
+  }
+
+  /* Hamburger mobile nav */
+  .mobile-nav-toggle {
+    display: none;
+  }
+  @media (max-width: 900px) {
+    .mobile-nav-toggle {
+      display: flex !important;
+      flex-direction: column;
+      gap: 5px;
+      padding: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-left: auto;
+    }
+    .mobile-nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: #1a1814;
+    }
+    .mobile-nav-links {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background: rgba(242,237,228,0.98);
+      backdrop-filter: blur(12px);
+      padding: 16px 20px;
+      border-bottom: 1px solid #d4cdc0;
+      flex-direction: column;
+      gap: 0;
+      z-index: 199;
+    }
+    .mobile-nav-links.open {
+      display: flex;
+    }
+    .mobile-nav-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1a1814;
+      padding: 14px 0;
+      border-bottom: 1px solid #d4cdc0;
+      text-decoration: none;
+    }
+    .mobile-nav-links a:last-child { border-bottom: none; }
+  }
+</style>
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body style="background-color: rgb(241, 238, 231)">
+<script src="insights-data.js"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+
+const { useState, useEffect, useRef } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "heroBg": "road",
+  "accentColor": "#1a1814",
+  "showSubtitle": true
+} /*EDITMODE-END*/;
+
+/* ── tokens ── */
+const T = {
+  ivory: '#f2ede4',
+  ivory2: '#ede8de',
+  ink: '#1a1814',
+  inkMid: '#6b6558',
+  inkLight: '#b0a898',
+  border: '#d4cdc0',
+  accent: '#c17d3c'
+};
+
+/* ── Label ── */
+function Label({ children, light }) {
+  return (
+    <div style={{
+      fontFamily: "'DM Mono', monospace",
+      fontSize: '10px', letterSpacing: '0.18em',
+      textTransform: 'uppercase',
+      color: light ? 'rgba(242,237,228,0.45)' : T.inkLight,
+      marginBottom: '20px',
+      display: 'flex', alignItems: 'center', gap: '10px'
+    }}>
+      <span style={{ display: 'inline-block', width: '24px', height: '1px', background: light ? 'rgba(242,237,228,0.3)' : T.inkLight, flexShrink: 0 }}></span>
+      {children}
+    </div>);
+
+}
+
+/* ── SunIcon ── */
+function SunIcon({ size = 48, color = T.inkLight }) {
+  const rays = 12;
+  return (
+    <svg width={size} height={size} viewBox="0 0 48 48" fill="none">
+      {Array.from({ length: rays }, (_, i) => {
+        const angle = i / rays * 2 * Math.PI;
+        const r1 = 16,r2 = 22;
+        const x1 = 24 + r1 * Math.cos(angle),y1 = 24 + r1 * Math.sin(angle);
+        const x2 = 24 + r2 * Math.cos(angle),y2 = 24 + r2 * Math.sin(angle);
+        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth="1.2" />;
+      })}
+      <circle cx="24" cy="24" r="10" stroke={color} strokeWidth="1.2" fill="none" />
+    </svg>);
+
+}
+
+/* ── Navigation ── */
+function Nav({ scrolled }) {
+  const links = [
+  { label: 'About', href: 'about.html' },
+  { label: 'Domains', href: 'domains.html' },
+  { label: 'Ventures', href: 'ventures.html' },
+  { label: 'Services', href: 'services.html' },
+  { label: 'ASCENT', href: 'ascent/index.html' },
+  { label: 'Insights', href: 'insights.html' },
+  { label: 'Contact', href: '#contact' }];
+
+  return (
+    <nav style={{
+      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200,
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      padding: '0 48px', height: '60px',
+      background: scrolled ? 'rgba(242,237,228,0.97)' : 'transparent',
+      backdropFilter: scrolled ? 'blur(12px)' : 'none',
+      borderBottom: scrolled ? `1px solid ${T.border}` : '1px solid transparent',
+      transition: 'all 0.4s ease'
+    }}>
+      {/* Logo */}
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <img
+          src={scrolled ? 'brand/1bc-logo-horizontal-ink.png' : 'brand/1bc-logo-horizontal-cream.png'}
+          alt="1st Base Camp"
+          style={{ height: '28px', width: 'auto', display: 'block', transition: 'opacity 0.3s' }} />
+        
+      </div>
+      {/* Links */}
+      <div style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
+        {links.map((l) =>
+        <a key={l.label} href={l.href} style={{
+          fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 500,
+          fontSize: '13px', letterSpacing: '0.1em', textTransform: 'uppercase',
+          color: scrolled ? T.inkMid : 'rgba(242,237,228,0.7)',
+          transition: 'color 0.2s'
+        }}
+        onMouseEnter={(e) => e.currentTarget.style.color = scrolled ? T.ink : '#fff'}
+        onMouseLeave={(e) => e.currentTarget.style.color = scrolled ? T.inkMid : 'rgba(242,237,228,0.7)'}>
+          {l.label}</a>
+        )}
+        <a href="#contact" style={{
+          fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
+          fontSize: '12px', letterSpacing: '0.14em', textTransform: 'uppercase',
+          border: `1px solid ${scrolled ? T.ink : 'rgba(242,237,228,0.6)'}`,
+          color: scrolled ? T.ink : '#f2ede4',
+          padding: '7px 18px',
+          transition: 'all 0.2s'
+        }}
+        onMouseEnter={(e) => {e.currentTarget.style.background = T.ink;e.currentTarget.style.color = '#f2ede4';e.currentTarget.style.borderColor = T.ink;}}
+        onMouseLeave={(e) => {e.currentTarget.style.background = 'transparent';e.currentTarget.style.color = scrolled ? T.ink : '#f2ede4';e.currentTarget.style.borderColor = scrolled ? T.ink : 'rgba(242,237,228,0.6)';}}>
+          Start a conversation</a>
+      </div>
+    </nav>);
+
+}
+
+/* ── Hero ── */
+function Hero({ heroBg }) {
+  return (
+    <section style={{ position: 'relative', height: '100vh', minHeight: '640px', overflow: 'hidden' }}>
+      {/* Background photo */}
+      <img
+        src="uploads/photo_9.jpg"
+        alt="Lone climber before a vast mountain peak"
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%' }} />
+      
+      {/* Overlay matching credibility section darkness, stronger at bottom for text */}
+      <div style={{
+        position: 'absolute', inset: 0,
+        background: 'linear-gradient(to bottom, rgba(26,24,20,0.35) 0%, rgba(26,24,20,0.2) 40%, rgba(26,24,20,0.65) 100%)'
+      }}></div>
+
+      {/* Content — pinned to bottom */}
+      <div style={{
+        position: 'absolute', inset: 0,
+        display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
+        padding: '0 48px 64px'
+      }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0', alignItems: 'flex-end' }}>
+          {/* Left: headline */}
+          <div>
+            <div style={{
+              fontFamily: "'DM Mono', monospace",
+              fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase',
+              color: 'rgba(242,237,228,0.55)', marginBottom: '28px',
+              display: 'flex', alignItems: 'center', gap: '10px'
+            }}>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <polygon points="7,1 13,11 1,11" stroke="rgba(242,237,228,0.55)" strokeWidth="1" fill="none" />
+              </svg>
+              Venture Studio, AI Lab, and Market Entry Partner
+            </div>
+            <h1 style={{
+              fontFamily: "'Barlow Condensed', sans-serif",
+              fontWeight: 900, fontSize: 'clamp(64px, 8vw, 112px)',
+              lineHeight: 0.92, letterSpacing: '-0.01em',
+              textTransform: 'uppercase', color: '#f2ede4',
+              textWrap: 'balance',
+              textShadow: '0 2px 24px rgba(26,24,20,0.35)'
+            }}>
+              The quiet<br />force behind<br />bold ventures.
+            </h1>
+          </div>
+
+          {/* Right: tagline + CTAs */}
+          <div style={{ paddingLeft: '48px', paddingBottom: '6px' }}>
+            <p style={{
+              fontFamily: "'Barlow', sans-serif", fontWeight: 300,
+              fontSize: '18px', lineHeight: 1.75, color: 'rgba(242,237,228,0.88)',
+              maxWidth: '380px', marginBottom: '40px',
+              borderLeft: '2px solid rgba(242,237,228,0.35)', paddingLeft: '28px',
+              textShadow: '0 1px 12px rgba(26,24,20,0.3)'
+            }}>
+              We are a venture studio crafting innovative startups from the ground up — across Canada, the Middle East, and beyond.
+            </p>
+            <div style={{ display: 'flex', gap: '20px', alignItems: 'center', paddingLeft: '30px' }}>
+              <a href="#contact" style={{
+                fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
+                fontSize: '13px', letterSpacing: '0.14em', textTransform: 'uppercase',
+                background: '#f2ede4', color: T.ink,
+                padding: '14px 28px', transition: 'opacity 0.2s'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.opacity = '0.85'}
+              onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}>
+                Start a conversation</a>
+              <a href="ventures.html" style={{
+                fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 500,
+                fontSize: '13px', letterSpacing: '0.12em', textTransform: 'uppercase',
+                color: 'rgba(242,237,228,0.6)',
+                borderBottom: '1px solid rgba(242,237,228,0.25)', paddingBottom: '3px',
+                transition: 'color 0.2s'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.color = '#f2ede4'}
+              onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(242,237,228,0.6)'}>
+                View ventures →</a>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom caption strip */}
+        <div style={{
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          marginTop: '40px', paddingTop: '20px',
+          borderTop: '1px solid rgba(242,237,228,0.12)'
+        }}>
+          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(242,237,228,0.35)' }}>Toronto · Dubai</span>
+          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(242,237,228,0.35)' }}>Americas ↔ MENA</span>
+        </div>
+      </div>
+    </section>);
+
+}
+
+/* ── What We Do / Model ── */
+function ModelSection() {
+  const stages = [
+  { num: '01', label: 'Ignition', desc: 'Validate the concept, structure the entity, assemble the founding team. Strategy and execution from day one.' },
+  { num: '02', label: 'Elevation', desc: 'Build the product, enter the market, generate early traction. We operate as co-founders, not consultants.' },
+  { num: '03', label: 'Expansion', desc: 'Cross-border growth across Americas and MENA. Channels, partnerships, and permanent market presence.' }];
+
+
+  return (
+    <section style={{ background: T.ivory, borderTop: `1px solid ${T.border}`, borderBottom: `1px solid ${T.border}` }}>
+      {/* Section header */}
+      <div style={{ padding: '72px 48px 56px', borderBottom: `1px solid ${T.border}` }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+          <div>
+            <Label>How we work</Label>
+            <h2 style={{
+              fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900,
+              fontSize: 'clamp(48px, 6vw, 80px)', lineHeight: 0.92,
+              letterSpacing: '-0.01em', textTransform: 'uppercase', color: T.ink
+            }}>What We Do</h2>
+          </div>
+          <p style={{
+            fontFamily: "'Barlow', sans-serif", fontWeight: 300,
+            fontSize: '15px', lineHeight: 1.75, color: T.inkMid,
+            maxWidth: '320px', textAlign: 'right'
+          }}>A three-stage model built around the realities of venture creation and cross-border growth.</p>
+        </div>
+      </div>
+
+      {/* Timeline strip + route map */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '48px', alignItems: 'start', padding: '56px 48px 64px' }}>
+        <div>
+          {/* Timeline ruler */}
+          <div style={{ position: 'relative', marginBottom: '40px' }}>
+            <div style={{ height: '1px', background: T.ink, position: 'relative' }}>
+              {[0, 33.3, 66.6, 100].map((pct, i) =>
+              <div key={i} style={{
+                position: 'absolute', left: `${pct}%`,
+                top: '-4px', width: '1px', height: '8px',
+                background: T.ink, transform: 'translateX(-50%)'
+              }}></div>
+              )}
+              <svg style={{ position: 'absolute', right: '-2px', top: '-7px' }} width="16" height="14" viewBox="0 0 16 14" fill="none">
+                <polygon points="0,0 16,7 0,14" fill={T.ink} />
+              </svg>
+            </div>
+          </div>
+          {/* Stage labels */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0' }}>
+            {stages.map((s, i) =>
+            <div key={i} style={{
+              paddingRight: i < 2 ? '48px' : '0',
+              borderRight: i < 2 ? `1px solid ${T.border}` : 'none',
+              paddingLeft: i > 0 ? '48px' : '0'
+            }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', marginBottom: '12px' }}>
+                  <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', color: T.inkLight }}>{s.num}</span>
+                  <span style={{
+                  fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800,
+                  fontSize: '28px', letterSpacing: '0.04em', textTransform: 'uppercase', color: T.ink
+                }}>{s.label}</span>
+                </div>
+                <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '14px', lineHeight: 1.75, color: T.inkMid }}>{s.desc}</p>
+              </div>
+            )}
+          </div>
+        </div>
+        {/* Route map illustration */}
+        <div style={{ width: '200px', flexShrink: 0, opacity: 0.88 }}>
+          <img src="uploads/route-map-ascent.png" alt="Ascent route map"
+          style={{ width: '100%', height: 'auto', display: 'block', borderLeft: `1px solid ${T.border}`, paddingLeft: '32px' }} />
+        </div>
+      </div>
+    </section>);
+
+}
+
+/* ── Ventures Logo Scroller ── */
+function VenturesSection() {
+  const ventures = [
+  { id: 'ascent', name: 'ASCENT', category: 'Academy', href: 'ascent/index.html', logo: 'brand/ascent/ascent-horizontal-ink.png' },
+  { id: 'pistacio', name: 'Pistac.io', category: 'FinTech', href: 'ventures.html?domain=fintech', logo: 'brand/ventures/pistacio-black.png' },
+  { id: 'altisnexis', name: 'AltisNexsys', category: 'AI & Data', href: 'ventures.html?domain=ai', logo: 'brand/ventures/altisnexis-black.png' },
+  { id: 'beaulogica', name: 'Beaulogica', category: 'ChemTech / AI & Data', href: 'ventures.html?domain=ai', wordmark: true }];
+
+
+  return (
+    <section id="ventures" style={{ background: T.ivory, borderBottom: `1px solid ${T.border}` }}>
+      {/* Header */}
+      <div style={{ padding: '72px 48px 56px', borderBottom: `1px solid ${T.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <div>
+          <Label>Portfolio</Label>
+          <h2 style={{
+            fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900,
+            fontSize: 'clamp(48px, 6vw, 80px)', lineHeight: 0.92,
+            letterSpacing: '-0.01em', textTransform: 'uppercase', color: T.ink
+          }}>What We're<br />Building.</h2>
+        </div>
+        <a href="ventures.html" style={{
+          fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 600,
+          fontSize: '12px', letterSpacing: '0.14em', textTransform: 'uppercase',
+          color: T.inkMid, borderBottom: `1px solid ${T.border}`, paddingBottom: '3px',
+          transition: 'color 0.2s'
+        }}
+        onMouseEnter={(e) => e.currentTarget.style.color = T.ink}
+        onMouseLeave={(e) => e.currentTarget.style.color = T.inkMid}>
+          View all ventures →</a>
+      </div>
+
+      {/* Venture grid — fills full width */}
+      <div style={{ display: 'grid', gridTemplateColumns: `repeat(${ventures.length}, 1fr)` }}>
+        {ventures.map((v, i) =>
+        <a key={v.id} href={v.href} style={{
+          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+          minHeight: '260px',
+          borderRight: i < ventures.length - 1 ? `1px solid ${T.border}` : 'none',
+          padding: '48px 40px',
+          cursor: 'pointer', transition: 'background 0.2s',
+          textDecoration: 'none'
+        }}
+        onMouseEnter={(e) => e.currentTarget.style.background = T.ivory2}
+        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
+          
+            {v.logo ?
+          <div style={{
+            height: '88px', width: '100%',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            marginBottom: '24px'
+          }}>
+                <img src={v.logo} alt={v.name} style={{ maxHeight: '60px', maxWidth: '180px', width: 'auto', objectFit: 'contain' }} />
+              </div> :
+
+          <div style={{
+            height: '88px', width: '100%',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            marginBottom: '24px'
+          }}>
+                {/* Typographic wordmark (no logo available) */}
+                <span style={{
+              fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800,
+              fontSize: '38px', letterSpacing: '0.01em', color: T.ink, lineHeight: 1
+            }}>{v.name}</span>
+              </div>
+          }
+            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: T.inkLight, textAlign: 'center' }}>{v.category}</div>
+          </a>
+        )}
+      </div>
+    </section>);
+
+}
+
+/* ── Services ── */
+function ServicesSection() {
+  const services = [
+  { num: '01', title: 'Incubation' },
+  { num: '02', title: 'Legal & Corporate Structure' },
+  { num: '03', title: 'Advisory & Management' },
+  { num: '04', title: 'Technical Outsourcing' },
+  { num: '05', title: 'Channel & Sales Enablement' },
+  { num: '06', title: 'New Market Entry' }];
+
+  return (
+    <section id="services" style={{ background: T.ivory, borderBottom: `1px solid ${T.border}` }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+        {/* Left: header */}
+        <div style={{ padding: '72px 48px', borderRight: `1px solid ${T.border}` }}>
+          <Label>Capabilities</Label>
+          <h2 style={{
+            fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900,
+            fontSize: 'clamp(48px, 5.5vw, 76px)', lineHeight: 0.92,
+            letterSpacing: '-0.01em', textTransform: 'uppercase', color: T.ink,
+            marginBottom: '32px'
+          }}>How We<br />Work<br />With You.</h2>
+          <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '15px', lineHeight: 1.75, color: T.inkMid, maxWidth: '340px', marginBottom: '40px' }}>
+            Six integrated capabilities, applied as needed. We engage as partners with skin in the game — not retainers.
+          </p>
+          <a href="services.html" style={{
+            fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
+            fontSize: '12px', letterSpacing: '0.14em', textTransform: 'uppercase',
+            background: T.ink, color: T.ivory, padding: '12px 24px',
+            display: 'inline-block', transition: 'opacity 0.2s'
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+          onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}>
+            View all services</a>
+        </div>
+        {/* Right: service list */}
+        <div style={{ borderTop: 'none' }}>
+          {services.map((s, i) =>
+          <a key={i} href={`services.html#${['incubation','legal','advisory','technical','sales','market-entry'][i]}`} style={{
+            display: 'flex', alignItems: 'center', gap: '24px',
+            padding: '24px 48px',
+            borderBottom: i < services.length - 1 ? `1px solid ${T.border}` : 'none',
+            cursor: 'pointer',
+            transition: 'background 0.2s',
+            textDecoration: 'none',
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.background = T.ivory2}
+          onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
+            
+              <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', color: T.inkLight, flexShrink: 0 }}>{s.num}</span>
+              <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '22px', letterSpacing: '0.04em', textTransform: 'uppercase', color: T.ink, flex: 1 }}>{s.title}</span>
+              <span style={{ color: T.border, fontSize: '16px', flexShrink: 0 }}>→</span>
+            </a>
+          )}
+        </div>
+      </div>
+    </section>);
+
+}
+
+/* ── Partnership / Credibility ── */
+function CredibilitySection() {
+  const principles = [
+  { num: 'I', title: 'Institutional Alignment', desc: 'We partner with Tier-1 and Tier-2 universities and firms of institutional standing. Our standards match theirs.' },
+  { num: 'II', title: 'Domain Expertise', desc: 'Every engagement draws on affiliated leaders across training, academia, technology, and market development.' },
+  { num: 'III', title: 'Operator Credibility', desc: 'We are builders and operators first. Our track record speaks before our pitch deck does.' },
+  { num: 'IV', title: 'Global Professionalism', desc: 'Dual presence in Toronto and Dubai. Two regions, one operating standard.' }];
+
+  return (
+    <section style={{ background: T.ink, borderBottom: `1px solid rgba(255,255,255,0.08)` }}>
+      {/* Full-bleed photo */}
+      <div style={{ height: '40vw', maxHeight: '520px', overflow: 'hidden', position: 'relative' }}>
+        <img src="uploads/chris-holgersson.jpg" alt=""
+        style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 40%', opacity: 0.65, filter: 'grayscale(10%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(26,24,20,0.3) 0%, rgba(26,24,20,0.8) 100%)' }}></div>
+        <div style={{ position: 'absolute', bottom: '48px', left: '48px', right: '48px' }}>
+          <h2 style={{
+            fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900,
+            fontSize: 'clamp(48px, 7vw, 96px)', lineHeight: 0.9,
+            letterSpacing: '-0.01em', textTransform: 'uppercase',
+            color: '#f2ede4'
+          }}>Trusted by<br />institutions.</h2>
+        </div>
+      </div>
+      {/* Principles grid */}
+      <div style={{ padding: '72px 48px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+        {principles.map((p, i) =>
+        <div key={i} style={{
+          padding: '0 40px 0 0',
+          borderRight: i < principles.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
+          marginRight: i < principles.length - 1 ? '40px' : '0'
+        }}>
+            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '11px', letterSpacing: '0.14em', color: 'rgba(242,237,228,0.25)', marginBottom: '20px' }}>{p.num}</div>
+            <h3 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '20px', letterSpacing: '0.04em', textTransform: 'uppercase', color: '#f2ede4', marginBottom: '12px' }}>{p.title}</h3>
+            <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '13px', lineHeight: 1.75, color: 'rgba(242,237,228,0.5)' }}>{p.desc}</p>
+          </div>
+        )}
+      </div>
+      {/* Partners strip */}
+      <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', padding: '32px 48px', display: 'flex', alignItems: 'center', gap: '48px', flexWrap: 'wrap' }}>
+        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(242,237,228,0.2)', whiteSpace: 'nowrap' }}>Ecosystem</span>
+        {['University Partner A', 'University Partner B', 'KPMG Affiliate', 'Academic Network', 'Institutional Partner'].map((p, i) =>
+        <span key={i} style={{
+          fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 500,
+          fontSize: '16px', letterSpacing: '0.06em', textTransform: 'uppercase',
+          color: 'rgba(242,237,228,0.28)',
+          cursor: 'pointer', transition: 'color 0.2s',
+        }}
+          onMouseEnter={e => e.currentTarget.style.color = 'rgba(242,237,228,0.7)'}
+          onMouseLeave={e => e.currentTarget.style.color = 'rgba(242,237,228,0.28)'}
+        >{p}</span>
+        )}
+      </div>
+    </section>);
+
+}
+
+/* ── ASCENT Teaser ── */
+function AscentSection() {
+  return (
+    <section id="ascent" style={{ position: 'relative', overflow: 'hidden', borderBottom: `1px solid ${T.border}` }}>
+      {/* Background photo */}
+      <img src="uploads/boris-stefanik.jpg" alt="Dramatic sky above clouds"
+      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%' }} />
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(13,15,20,0.88) 0%, rgba(13,15,20,0.55) 50%, rgba(13,15,20,0.2) 100%)' }}></div>
+
+      <div style={{ position: 'relative', display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: '480px' }}>
+        {/* Left: content */}
+        <div style={{ padding: '80px 48px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <div>
+            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(240,236,227,0.4)', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span style={{ width: '24px', height: '1px', background: 'rgba(240,236,227,0.3)', display: 'inline-block' }}></span>
+              Academy by 1st Base Camp
+            </div>
+            <img src="brand/ascent/ascent-horizontal-cream.png" alt="ASCENT"
+            style={{ height: 'clamp(72px, 9vw, 128px)', width: 'auto', display: 'block', marginBottom: '28px' }} />
+            <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '18px', lineHeight: 1.75, color: 'rgba(240,236,227,0.65)', maxWidth: '380px', marginBottom: '40px' }}>
+              A structured academy for founders and operators building ventures and expanding across borders.
+            </p>
+          </div>
+          <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+            <a href="ascent/index.html" style={{
+              fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
+              fontSize: '13px', letterSpacing: '0.14em', textTransform: 'uppercase',
+              background: '#f0ece3', color: '#0d0f14', padding: '14px 28px',
+              transition: 'opacity 0.2s', display: 'inline-block'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.opacity = '0.88'}
+            onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}>
+              Explore ASCENT</a>
+            <a href="ascent/index.html#enroll" style={{
+              fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 500,
+              fontSize: '13px', letterSpacing: '0.12em', textTransform: 'uppercase',
+              color: 'rgba(240,236,227,0.45)',
+              borderBottom: '1px solid rgba(240,236,227,0.2)', paddingBottom: '3px',
+              transition: 'color 0.2s'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.color = '#f0ece3'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(240,236,227,0.45)'}>
+              Apply now →</a>
+          </div>
+        </div>
+        {/* Right: track list */}
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '80px 48px' }}>
+          {['AI Enablement for Builders & Construction', 'Agentic AI & Robotics in Manufacturing', 'Data Governance for SMEs', 'Fraud & Misuse Management and Prevention'].map((t, i) =>
+          <a key={i} href="ascent/index.html#tracks" style={{
+            padding: '20px 0',
+            borderBottom: i < 3 ? '1px solid rgba(240,236,227,0.08)' : 'none',
+            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+            transition: 'opacity 0.2s', cursor: 'pointer'
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.opacity = '0.7'}
+          onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}>
+            
+              <div>
+                <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.1em', color: 'rgba(240,236,227,0.25)', marginBottom: '4px' }}>Track {String(i + 1).padStart(2, '0')}</div>
+                <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '20px', letterSpacing: '0.04em', textTransform: 'uppercase', color: '#f0ece3' }}>{t}</div>
+              </div>
+              <span style={{ color: 'rgba(240,236,227,0.25)', fontSize: '16px' }}>→</span>
+            </a>
+          )}
+        </div>
+      </div>
+    </section>);
+
+}
+
+/* ── Insights ── */
+function InsightsSection() {
+  const posts = (window.INSIGHTS || []).slice(0, 3).map((p) => ({ tag: p.tag, title: p.title, date: p.date, slug: p.slug }));
+  return (
+    <section id="insights" style={{ background: T.ivory2, borderBottom: `1px solid ${T.border}` }}>
+      <div style={{ padding: '72px 48px 48px', borderBottom: `1px solid ${T.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <div>
+          <Label>Knowledge</Label>
+          <h2 style={{
+            fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900,
+            fontSize: 'clamp(48px, 6vw, 80px)', lineHeight: 0.92,
+            letterSpacing: '-0.01em', textTransform: 'uppercase', color: T.ink
+          }}>Insights</h2>
+        </div>
+        <a href="insights.html" style={{
+          fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 600, fontSize: '12px', letterSpacing: '0.14em', textTransform: 'uppercase',
+          color: T.inkMid, borderBottom: `1px solid ${T.border}`, paddingBottom: '3px',
+          transition: 'color 0.2s'
+        }}
+        onMouseEnter={(e) => e.currentTarget.style.color = T.ink}
+        onMouseLeave={(e) => e.currentTarget.style.color = T.inkMid}>
+          All insights →</a>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
+        {posts.map((p, i) =>
+        <a key={i} href={`insight-detail.html?slug=${p.slug}`} style={{
+          padding: '40px 48px',
+          borderRight: i < posts.length - 1 ? `1px solid ${T.border}` : 'none',
+          cursor: 'pointer', transition: 'background 0.2s', textDecoration: 'none'
+        }}
+        onMouseEnter={(e) => e.currentTarget.style.background = T.ivory}
+        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
+          
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '24px' }}>
+              <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: T.accent }}>{p.tag}</span>
+              <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', color: T.inkLight }}>{p.date}</span>
+            </div>
+            <h3 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '22px', letterSpacing: '0.02em', textTransform: 'uppercase', lineHeight: 1.2, color: T.ink, marginBottom: '24px', textWrap: 'pretty' }}>{p.title}</h3>
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: T.inkLight }}>Read →</span>
+          </a>
+        )}
+      </div>
+    </section>);
+
+}
+
+/* ── Contact ── */
+function ContactSection() {
+  const [form, setForm] = useState({ name: '', org: '', email: '', intent: '', message: '' });
+  const [submitted, setSubmitted] = useState(false);
+  const [focused, setFocused] = useState(null);
+  const intents = ['Co-building a venture', 'Market entry', 'ASCENT enrollment', 'Partnership inquiry', 'Other'];
+
+  const field = (id, label, type = 'text', half = false) =>
+  <div style={{ gridColumn: half ? 'span 1' : 'span 2' }}>
+      <label style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(242,237,228,0.35)', display: 'block', marginBottom: '8px' }}>{label}</label>
+      <input type={type} value={form[id]} onChange={(e) => setForm({ ...form, [id]: e.target.value })}
+    onFocus={() => setFocused(id)} onBlur={() => setFocused(null)}
+    style={{
+      fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '15px',
+      background: 'transparent', border: 'none',
+      borderBottom: `1px solid ${focused === id ? 'rgba(242,237,228,0.5)' : 'rgba(242,237,228,0.12)'}`,
+      color: '#f2ede4', padding: '10px 0', width: '100%', outline: 'none',
+      transition: 'border-color 0.2s'
+    }} />
+    </div>;
+
+
+  return (
+    <section id="contact" style={{ background: T.ink }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+        {/* Left */}
+        <div style={{ padding: '80px 48px', borderRight: '1px solid rgba(255,255,255,0.07)' }}>
+          <Label light>Contact</Label>
+          <h2 style={{
+            fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900,
+            fontSize: 'clamp(48px, 6vw, 80px)', lineHeight: 0.92,
+            letterSpacing: '-0.01em', textTransform: 'uppercase',
+            color: '#f2ede4', marginBottom: '40px'
+          }}>Start a<br />Conversation.</h2>
+          <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '15px', lineHeight: 1.75, color: 'rgba(242,237,228,0.45)', maxWidth: '320px', marginBottom: '64px' }}>
+            We respond to high-signal inquiries within 48 hours. Tell us who you are, what you are building, and what you need.
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
+            {[['Toronto', 'North America', '99 Yorkville Ave, Unit 200', 'Toronto, ON M5R 3K5', 'info@firstbasecamp.com'], ['Dubai', 'MENA', '11th Floor, JAFZA One, PO Box 61317', 'Dubai, United Arab Emirates', 'mena@firstbasecamp.com']].map(([city, region, addr1, addr2, email]) =>
+            <div key={city} style={{ paddingBottom: '28px', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', marginBottom: '8px' }}>
+                  <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '18px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#f2ede4' }}>{city}</span>
+                  <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.1em', color: 'rgba(242,237,228,0.25)' }}>{region}</span>
+                </div>
+                <div style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '13px', lineHeight: 1.6, color: 'rgba(242,237,228,0.55)' }}>{addr1}</div>
+                <div style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '13px', lineHeight: 1.6, color: 'rgba(242,237,228,0.55)', marginBottom: '8px' }}>{addr2}</div>
+                <div style={{ fontFamily: "'Calibri Light', 'Calibri', sans-serif", fontWeight: 300, fontSize: '13px', letterSpacing: '0.02em', color: 'rgba(242,237,228,0.55)' }}>{email}</div>
+              </div>
+            )}
+          </div>
+          {/* Sun icon */}
+          <div style={{ marginTop: '48px', opacity: 0.2 }}>
+            <SunIcon size={56} color="#f2ede4" />
+          </div>
+        </div>
+        {/* Right: form */}
+        <div style={{ padding: '80px 48px' }}>
+          {submitted ?
+          <div style={{ paddingTop: '40px' }}>
+              <h3 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: '48px', letterSpacing: '-0.01em', textTransform: 'uppercase', color: '#f2ede4', marginBottom: '16px' }}>Message<br />received.</h3>
+              <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '14px', color: 'rgba(242,237,228,0.4)' }}>We will be in touch within 48 hours.</p>
+            </div> :
+
+          <form style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '28px 32px' }} onSubmit={(e) => {e.preventDefault();setSubmitted(true);}}>
+              {field('name', 'Full name', 'text', true)}
+              {field('org', 'Organization', 'text', true)}
+              <div style={{ gridColumn: 'span 2' }}>
+                {field('email', 'Email address', 'email')}
+              </div>
+              <div style={{ gridColumn: 'span 2' }}>
+                <label style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(242,237,228,0.35)', display: 'block', marginBottom: '12px' }}>I am interested in</label>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                  {intents.map((intent) =>
+                <button key={intent} type="button" onClick={() => setForm({ ...form, intent })} style={{
+                  fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 600, fontSize: '12px', letterSpacing: '0.1em', textTransform: 'uppercase',
+                  padding: '7px 14px',
+                  border: `1px solid ${form.intent === intent ? 'rgba(242,237,228,0.6)' : 'rgba(242,237,228,0.12)'}`,
+                  background: form.intent === intent ? 'rgba(242,237,228,0.1)' : 'transparent',
+                  color: form.intent === intent ? '#f2ede4' : 'rgba(242,237,228,0.35)',
+                  cursor: 'pointer', transition: 'all 0.2s'
+                }}>{intent}</button>
+                )}
+                </div>
+              </div>
+              <div style={{ gridColumn: 'span 2' }}>
+                <label style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(242,237,228,0.35)', display: 'block', marginBottom: '8px' }}>Tell us more</label>
+                <textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
+              onFocus={() => setFocused('message')} onBlur={() => setFocused(null)}
+              rows={4} style={{
+                fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '15px',
+                background: 'transparent', border: 'none',
+                borderBottom: `1px solid ${focused === 'message' ? 'rgba(242,237,228,0.5)' : 'rgba(242,237,228,0.12)'}`,
+                color: '#f2ede4', padding: '10px 0', width: '100%', outline: 'none', resize: 'none',
+                transition: 'border-color 0.2s'
+              }} />
+              </div>
+              <div style={{ gridColumn: 'span 2' }}>
+                <button type="submit" style={{
+                fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
+                fontSize: '13px', letterSpacing: '0.14em', textTransform: 'uppercase',
+                border: '1px solid rgba(242,237,228,0.4)', background: 'transparent',
+                color: '#f2ede4', padding: '14px 32px', cursor: 'pointer',
+                transition: 'all 0.2s'
+              }}
+              onMouseEnter={(e) => {e.currentTarget.style.background = '#f2ede4';e.currentTarget.style.color = T.ink;}}
+              onMouseLeave={(e) => {e.currentTarget.style.background = 'transparent';e.currentTarget.style.color = '#f2ede4';}}>
+                Send message</button>
+              </div>
+            </form>
+          }
+        </div>
+      </div>
+    </section>);
+
+}
+
+/* ── Footer ── */
+function Footer() {
+  return (
+    <footer style={{ background: T.ink, borderTop: '1px solid rgba(255,255,255,0.06)', padding: '32px 48px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <img src="brand/1bc-logo-horizontal-cream.png" alt="1st Base Camp" style={{ height: '22px', width: 'auto', display: 'block', opacity: 0.55 }} />
+        </div>
+        <div style={{ display: 'flex', gap: '28px' }}>
+          {[['About', 'about.html'], ['Domains', 'domains.html'], ['Ventures', 'ventures.html'], ['Services', '#services'], ['ASCENT', 'ascent/index.html'], ['Insights', 'insights.html'], ['Contact', '#contact']].map(([l, href]) =>
+          <a key={l} href={href} style={{
+            fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 500, fontSize: '12px', letterSpacing: '0.1em', textTransform: 'uppercase',
+            color: 'rgba(242,237,228,0.25)', transition: 'color 0.2s'
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(242,237,228,0.6)'}
+          onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(242,237,228,0.25)'}>
+            {l}</a>
+          )}
+        </div>
+        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.08em', color: 'rgba(242,237,228,0.18)' }}>© 2025 First Base Camp</span>
+      </div>
+    </footer>);
+
+}
+
+/* ── App ── */
+function App() {
+  const [scrolled, setScrolled] = useState(false);
+  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 80);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  return (
+    <>
+      <Nav scrolled={scrolled} />
+      <Hero heroBg={tweaks.heroBg} />
+      <ModelSection />
+      <VenturesSection />
+      <ServicesSection />
+      <CredibilitySection />
+      <AscentSection />
+      <InsightsSection />
+      <ContactSection />
+      <Footer />
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="Hero">
+          <TweakRadio label="Hero image" value={tweaks.heroBg} options={['road', 'mountain']} onChange={(v) => setTweak('heroBg', v)} />
+        </TweakSection>
+        <TweakSection label="Layout">
+          <TweakToggle label="Show intro subtitle" value={tweaks.showSubtitle} onChange={(v) => setTweak('showSubtitle', v)} />
+        </TweakSection>
+      </TweaksPanel>
+    </>);
+
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+<div id="root"></div>
+
+<script>
+(function() {
+  // Inject hamburger toggle once DOM is ready
+  function initMobileNav() {
+    var nav = document.querySelector('nav');
+    if (!nav || nav.dataset.mobileInit) return;
+    nav.dataset.mobileInit = '1';
+    var links = nav.querySelector('div:last-child');
+    if (!links) return;
+    links.classList.add('mobile-nav-links');
+    var btn = document.createElement('button');
+    btn.className = 'mobile-nav-toggle';
+    btn.setAttribute('aria-label', 'Menu');
+    btn.innerHTML = '<span></span><span></span><span></span>';
+    btn.addEventListener('click', function() {
+      links.classList.toggle('open');
+    });
+    // insert button before the links div
+    nav.insertBefore(btn, links);
+    // close on link click
+    links.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() { links.classList.remove('open'); });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(initMobileNav, 800); });
+  } else {
+    setTimeout(initMobileNav, 800);
+  }
+})();
+</script>
+
+<script src="mobile-nav.js"></script>
+</body>
+</html>

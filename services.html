@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Services — 1st Base Camp</title>
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicons/1bc-favicon-32.png">
+<link rel="apple-touch-icon" href="brand/favicons/1bc-favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #f2ede4; color: #1a1814; font-family: 'Barlow', sans-serif; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: #d4c9b0; }
+  ::-webkit-scrollbar { width: 3px; } ::-webkit-scrollbar-track { background: #f2ede4; } ::-webkit-scrollbar-thumb { background: #c8c0b0; }
+</style>
+<style id="responsive">
+  /* ── Mobile responsiveness ── */
+  @media (max-width: 900px) {
+    /* nav */
+    nav { padding: 0 20px !important; }
+    nav > div:last-child { display: none !important; }
+    nav > a[href], nav > div:first-child { display: flex !important; }
+
+    /* generic 2-col → 1-col grid */
+    [style*="grid-template-columns: 1fr 1fr"],
+    [style*="gridTemplateColumns: '1fr 1fr'"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(2"],
+    [style*="gridTemplateColumns: 'repeat(2"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(3"],
+    [style*="gridTemplateColumns: 'repeat(3"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(4"],
+    [style*="gridTemplateColumns: 'repeat(4"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    /* hero text size */
+    h1 { font-size: clamp(40px, 10vw, 80px) !important; }
+    h2 { font-size: clamp(32px, 8vw, 64px) !important; }
+    /* section padding */
+    section, footer, nav { padding-left: 20px !important; padding-right: 20px !important; }
+    /* hero full-height on mobile */
+    section[style*="height: 100vh"] { min-height: 560px !important; }
+  }
+
+  @media (max-width: 600px) {
+    [style*="grid-template-columns: repeat(3"],
+    [style*="gridTemplateColumns: 'repeat(3"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(4"],
+    [style*="gridTemplateColumns: 'repeat(4"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    [style*="padding: '72px 48px"],
+    [style*="padding: '80px 48px"],
+    [style*="padding: '120px 80px"],
+    [style*="padding: '64px 48px"] {
+      padding: 40px 20px !important;
+    }
+    /* Horizontal scrollers stay scrollable */
+    .scroller { overflow-x: auto !important; }
+  }
+
+  /* Hamburger mobile nav */
+  .mobile-nav-toggle {
+    display: none;
+  }
+  @media (max-width: 900px) {
+    .mobile-nav-toggle {
+      display: flex !important;
+      flex-direction: column;
+      gap: 5px;
+      padding: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-left: auto;
+    }
+    .mobile-nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: #1a1814;
+    }
+    .mobile-nav-links {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background: rgba(242,237,228,0.98);
+      backdrop-filter: blur(12px);
+      padding: 16px 20px;
+      border-bottom: 1px solid #d4cdc0;
+      flex-direction: column;
+      gap: 0;
+      z-index: 199;
+    }
+    .mobile-nav-links.open {
+      display: flex;
+    }
+    .mobile-nav-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1a1814;
+      padding: 14px 0;
+      border-bottom: 1px solid #d4cdc0;
+      text-decoration: none;
+    }
+    .mobile-nav-links a:last-child { border-bottom: none; }
+  }
+</style>
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+<script type="text/babel" src="shared.js"></script>
+<script type="text/babel">
+const { useState } = React;
+
+const SERVICES = [
+  {
+    id: 'incubation', num: '01', title: 'Incubation',
+    tagline: 'End-to-end venture building from concept validation to market launch.',
+    body: `We do not run accelerator cohorts or hand out strategic advice. Incubation at First Base Camp means we embed inside your venture — as operators with accountability for outcomes, not consultants with deliverables.
+
+We work with founders and institutions from the earliest moment of concept formation through to a launch-ready venture. That means validating market assumptions with rigour, designing business models that hold under pressure, assembling and structuring founding teams, defining the product with engineering-grade precision, and planning a go-to-market entry that is executable — not aspirational.
+
+We are structurally aligned with your success. We bring capital, bandwidth, and operational depth to every incubation engagement. The result is a venture that is built to last, not one that is rushed to pitch.`,
+    what: ['Concept validation and market sizing', 'Business model design and stress-testing', 'Founding team assembly and equity structure', 'Product definition and MVP specification', 'Investor narrative and pitch preparation', 'Launch planning and go-to-market execution'],
+    forWhom: 'Founders at the idea stage. Institutions seeking to commercialize IP or spin out research. Operators with deep domain expertise who need a co-builder to turn conviction into a functioning venture.',
+    engagement: 'Co-build partnership with equity participation. We invest time, capital, and operational bandwidth — not advice.',
+  },
+  {
+    id: 'legal', num: '02', title: 'Legal & Corporate Structure',
+    tagline: 'Entity formation, governance frameworks, and compliance across jurisdictions.',
+    body: `Cross-border ventures require cross-border legal infrastructure — and getting it wrong at the earliest stage creates compounding costs that follow a company for years. We structure entities, establish governance, and ensure regulatory compliance across the jurisdictions our ventures operate in.
+
+We coordinate with local counsel in Toronto, Dubai, and across the MENA region. We manage the full formation process — jurisdiction selection, shareholder agreements, cap table structure, board composition, and IP assignment — and deliver a governance-ready entity that can raise capital, enter contracts, and operate credibly across markets.
+
+This is not advisory. We manage the process, own the timeline, and produce the documents. When we are done, your venture has a legal foundation that institutional partners and investors will not need to rebuild.`,
+    what: ['Jurisdiction selection and entity formation', 'Shareholder agreements and governance frameworks', 'Cross-border regulatory compliance mapping', 'Cap table design and equity structuring', 'IP assignment, protection, and licensing', 'Compliance monitoring and ongoing legal advisory'],
+    forWhom: 'Ventures expanding into new markets. Founders requiring clean multi-jurisdiction structure ahead of fundraising. Institutions establishing commercial entities or spin-outs that must meet institutional governance standards.',
+    engagement: 'Project-based engagement for formation and initial structure. Ongoing retainer available for compliance monitoring and regulatory advisory.',
+  },
+  {
+    id: 'advisory', num: '03', title: 'Advisory & Management',
+    tagline: 'Embedded operational leadership at the moments that determine a venture\'s trajectory.',
+    body: `There are moments in a venture's life when the quality of leadership is the only thing that matters — when a pivot is required, when a key hire has departed, when a market entry is going wrong, or when a board needs a credible operator in the room.
+
+We provide embedded strategic and operational leadership for ventures at exactly those moments. We do not produce reports. We join the leadership team, define objectives, manage execution, and measure results. Our engagement is structured to transfer capability, not create dependency — we build the operating system and the team alongside it.
+
+When we take on an advisory role, we hold ourselves to the same accountability standard we apply to ventures we co-build. If the venture does not perform, neither do we.`,
+    what: ['Embedded C-suite and senior operational leadership', 'Strategic planning and quarterly execution cycles', 'Board advisory and investor relations support', 'OKR and performance framework design', 'Crisis navigation and turnaround management', 'Organizational design and talent strategy'],
+    forWhom: 'Ventures between leadership transitions. Founders requiring a senior operational co-pilot. Investors seeking accountable, hands-on management support for a portfolio company at an inflection point.',
+    engagement: 'Embedded engagement with defined scope, deliverables, and accountability milestones. Time-bounded with clear exit criteria and a structured knowledge transfer.',
+  },
+  {
+    id: 'technical', num: '04', title: 'Technical Outsourcing',
+    tagline: 'Curated engineering, product, and data capability aligned to your venture\'s exact needs.',
+    body: `Most technical outsourcing fails because it treats talent as interchangeable and context as transferable. Neither is true. We source, vet, and integrate technical capability — engineers, product managers, data scientists, and technical leads — that is selected against the specific challenges of your venture, not a generic talent pool.
+
+Our technical partners are held to the same outcomes-based standards we apply to all our engagements. They are integrated into your team, aligned to your product roadmap, and accountable to the same metrics as your internal hires. We manage the integration, resolve the friction, and ensure the capability compounds over time.
+
+This service is particularly valuable for ventures in regulated domains — health, finance, AI infrastructure — where technical decisions have long-term regulatory and architectural consequences that a generic outsourcing arrangement will not anticipate.`,
+    what: ['Technical team assembly, vetting, and integration', 'Engineering leadership and fractional CTO support', 'Product management and roadmap development', 'Data architecture and AI infrastructure design', 'Quality assurance, security review, and technical audits', 'Vendor selection and technical partner management'],
+    forWhom: 'Ventures requiring technical depth without the overhead and risk of full-time hiring. Founders with strong domain expertise and commercial clarity but limited technical leadership. Companies entering regulated domains where architectural decisions compound.',
+    engagement: 'Modular engagement from a single senior hire to a full technical function. Scales up or down as the venture evolves.',
+  },
+  {
+    id: 'sales', num: '05', title: 'Channel & Sales Enablement',
+    tagline: 'Go-to-market architecture, channel development, and revenue acceleration.',
+    body: `A credible product in a new market generates no revenue without a commercial infrastructure to convert presence into pipeline. We design and execute go-to-market strategies, build and activate channel partnerships, and establish the sales operations that turn market entry into measurable revenue growth.
+
+We do not produce go-to-market decks. We build the playbook, identify and activate the channel partners, design the sales process, instrument the pipeline, and manage early commercial relationships until the venture's own team is ready to own them.
+
+Our work in this area is grounded in the specific dynamics of the Americas-MENA corridor, where channel structures, enterprise buying cycles, and partner economics differ significantly from what North American and European playbooks assume. We know what works here because we have built and operated these channels ourselves.`,
+    what: ['Go-to-market strategy and execution playbook', 'Channel partner identification, activation, and management', 'Enterprise sales process design and CRM implementation', 'Revenue operations and pipeline instrumentation', 'Early customer acquisition and commercial relationship management', 'Customer success frameworks and retention architecture'],
+    forWhom: 'Ventures entering a new market with a proven product but limited commercial infrastructure. Founders with deep technical or domain expertise who need a commercial co-builder. Companies expanding into the MENA market from North America, or vice versa.',
+    engagement: 'Project-based for strategy design and initial channel activation. Ongoing advisory retainer for pipeline management and partner development.',
+  },
+  {
+    id: 'market-entry', num: '06', title: 'New Market Entry',
+    tagline: 'Cross-border expansion from strategy through established market presence.',
+    body: `We specialize in the Americas-MENA corridor — the geographic axis where First Base Camp was built and where our operational networks are deepest. Our market entry practice combines on-the-ground intelligence, regulatory navigation, and active partnership activation to make cross-border expansion viable, not just planned.
+
+Our dual presence in Toronto and Dubai is not cosmetic. It represents active regulatory relationships, institutional partnerships, government engagement history, and commercial networks that we deploy on behalf of ventures entering new markets. When we say we will open a market, we mean that we have the relationships and the operational presence to do it.
+
+Market entry is where the gap between strategy and execution is widest. We close that gap by operating in both markets simultaneously, managing the complexity of two regulatory environments, two sets of cultural expectations, and two commercial ecosystems — and making them work together on behalf of a single venture.`,
+    what: ['Market feasibility assessment and entry strategy', 'Regulatory and compliance landscape mapping by jurisdiction', 'Local partnership, distributor, and channel identification', 'Government and institutional stakeholder engagement', 'Market presence establishment and commercial activation', 'Cross-border legal and operational structuring'],
+    forWhom: 'Companies expanding from North America into MENA, or from MENA into North American markets. Institutions seeking a credible, operationally active regional partner. Ventures requiring on-the-ground presence in either Toronto or Dubai to establish commercial and regulatory credibility.',
+    engagement: 'Phased engagement aligned to the Ignition → Elevation → Expansion model. We stay in for as long as the expansion requires a committed on-the-ground partner.',
+  },
+];
+
+function ContactTile({ serviceTitle }) {
+  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [submitted, setSubmitted] = useState(false);
+  const [focused, setFocused] = useState(null);
+  const inp = (field) => ({
+    fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '14px',
+    background: 'transparent', border: 'none',
+    borderBottom: `1px solid ${focused === field ? 'rgba(26,24,20,0.55)' : T.border}`,
+    color: T.ink, padding: '10px 0', width: '100%', outline: 'none', transition: 'border-color 0.2s',
+  });
+  return submitted ? (
+    <div style={{ padding: '24px 0' }}>
+      <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '24px', textTransform: 'uppercase', color: T.ink, marginBottom: '6px' }}>Message received.</div>
+      <div style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '13px', color: T.inkMid }}>We will be in touch within 48 hours.</div>
+    </div>
+  ) : (
+    <form onSubmit={e => { e.preventDefault(); setSubmitted(true); }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px 24px', marginBottom: '20px' }}>
+        <div>
+          <label style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: T.inkLight, display: 'block', marginBottom: '6px' }}>Name</label>
+          <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} onFocus={() => setFocused('name')} onBlur={() => setFocused(null)} style={inp('name')} required />
+        </div>
+        <div>
+          <label style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: T.inkLight, display: 'block', marginBottom: '6px' }}>Email</label>
+          <input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} onFocus={() => setFocused('email')} onBlur={() => setFocused(null)} style={inp('email')} required />
+        </div>
+        <div style={{ gridColumn: 'span 2' }}>
+          <label style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: T.inkLight, display: 'block', marginBottom: '6px' }}>Tell us about your needs</label>
+          <textarea rows={2} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} onFocus={() => setFocused('msg')} onBlur={() => setFocused(null)} placeholder={`What do you need from our ${serviceTitle} capability?`} style={{ ...inp('msg'), resize: 'none' }} />
+        </div>
+      </div>
+      <button type="submit" style={{
+        fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '12px', letterSpacing: '0.14em', textTransform: 'uppercase',
+        background: T.ink, color: T.ivory, padding: '11px 22px', border: 'none', cursor: 'pointer', transition: 'opacity 0.2s',
+      }}
+        onMouseEnter={e => e.currentTarget.style.opacity = '0.8'}
+        onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+      >Get in touch</button>
+    </form>
+  );
+}
+
+function ServiceTile({ s, flip }) {
+  /* flip = true → dark tile */
+  const dark = flip;
+  const bg = dark ? T.ink : T.ivory2;
+  const fg = dark ? '#f2ede4' : T.ink;
+  const fgMid = dark ? 'rgba(242,237,228,0.6)' : T.inkMid;
+  const fgLight = dark ? 'rgba(242,237,228,0.35)' : T.inkLight;
+  const borderC = dark ? 'rgba(242,237,228,0.1)' : T.border;
+
+  return (
+    <div id={s.id} style={{ background: bg, display: 'flex', flexDirection: 'column', borderBottom: `1px solid ${T.border}` }}>
+      {/* Top portion: number + title + tagline */}
+      <div style={{ padding: '52px 52px 40px', borderBottom: `1px solid ${borderC}` }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '24px', marginBottom: '24px' }}>
+          <div>
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '11px', letterSpacing: '0.14em', color: fgLight }}>{s.num}</span>
+            <h2 style={{
+              fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900,
+              fontSize: 'clamp(32px, 3.5vw, 48px)', lineHeight: 0.92, letterSpacing: '-0.01em',
+              textTransform: 'uppercase', color: fg, marginTop: '8px',
+            }}>{s.title}</h2>
+          </div>
+          <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', color: fgLight, paddingTop: '4px', textAlign: 'right', maxWidth: '200px', lineHeight: 1.5, flexShrink: 0 }}>Capability {s.num}</div>
+        </div>
+        <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '17px', lineHeight: 1.65, color: fgMid, maxWidth: '520px', fontStyle: 'italic' }}>{s.tagline}</p>
+      </div>
+
+      {/* Body: description + scope side by side */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', flex: 1 }}>
+        {/* Left: full description */}
+        <div style={{ padding: '40px 52px', borderRight: `1px solid ${borderC}` }}>
+          <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.16em', textTransform: 'uppercase', color: fgLight, marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ display: 'inline-block', width: '20px', height: '1px', background: fgLight }}></span>
+            About this service
+          </div>
+          {s.body.split('\n\n').map((p, i) => (
+            <p key={i} style={{
+              fontFamily: "'Barlow', sans-serif", fontWeight: 300,
+              fontSize: i === 0 ? '16px' : '14px', lineHeight: 1.85, color: fgMid,
+              marginBottom: i < s.body.split('\n\n').length - 1 ? '18px' : '0',
+              textWrap: 'pretty',
+            }}>{p}</p>
+          ))}
+        </div>
+
+        {/* Right: scope + who + engagement + mini contact */}
+        <div style={{ padding: '40px 40px', display: 'flex', flexDirection: 'column', gap: '32px' }}>
+          {/* Scope */}
+          <div>
+            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.16em', textTransform: 'uppercase', color: fgLight, marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span style={{ display: 'inline-block', width: '20px', height: '1px', background: fgLight }}></span>Scope
+            </div>
+            {s.what.map((item, i) => (
+              <div key={i} style={{
+                display: 'flex', gap: '12px', alignItems: 'flex-start',
+                padding: '10px 0',
+                borderBottom: i < s.what.length - 1 ? `1px solid ${borderC}` : 'none',
+              }}>
+                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', color: fgLight, marginTop: '2px', flexShrink: 0 }}>{String(i + 1).padStart(2, '0')}</span>
+                <span style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '13px', lineHeight: 1.6, color: fg }}>{item}</span>
+              </div>
+            ))}
+          </div>
+          {/* For whom */}
+          <div style={{ borderTop: `1px solid ${borderC}`, paddingTop: '24px' }}>
+            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.16em', textTransform: 'uppercase', color: fgLight, marginBottom: '10px' }}>Who this is for</div>
+            <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '13px', lineHeight: 1.7, color: fgMid }}>{s.forWhom}</p>
+          </div>
+          {/* Engagement */}
+          <div style={{ borderTop: `1px solid ${borderC}`, paddingTop: '24px' }}>
+            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.16em', textTransform: 'uppercase', color: fgLight, marginBottom: '10px' }}>Engagement model</div>
+            <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '13px', lineHeight: 1.7, color: fgMid }}>{s.engagement}</p>
+          </div>
+          {/* Contact form */}
+          <div style={{ borderTop: `1px solid ${borderC}`, paddingTop: '24px' }}>
+            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.16em', textTransform: 'uppercase', color: fgLight, marginBottom: '18px' }}>Get in touch</div>
+            <ContactTile serviceTitle={s.title} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ServicesPage() {
+  return (
+    <>
+      <Nav activePage="Services" />
+      {/* Header */}
+      <section style={{ paddingTop: '60px', background: T.ivory }}>
+        <div style={{ padding: '80px 48px 64px', borderBottom: `1px solid ${T.border}`, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'end' }}>
+          <div>
+            <Label>Capabilities</Label>
+            <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(52px, 8vw, 96px)', lineHeight: 0.9, letterSpacing: '-0.01em', textTransform: 'uppercase', color: T.ink }}>
+              How We<br />Work<br />With You.
+            </h1>
+          </div>
+          <div style={{ paddingBottom: '8px' }}>
+            <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '18px', lineHeight: 1.8, color: T.inkMid, borderLeft: `2px solid ${T.border}`, paddingLeft: '28px', marginBottom: '32px' }}>
+              Six integrated capabilities, applied as needed. We engage as partners with skin in the game — not retainers, not advisors. Each service below includes a direct contact form for your inquiry.
+            </p>
+            {/* Jump links */}
+            <div style={{ paddingLeft: '30px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              {SERVICES.map(s => (
+                <a key={s.id} href={`#${s.id}`} style={{
+                  fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 600, fontSize: '12px',
+                  letterSpacing: '0.1em', textTransform: 'uppercase',
+                  padding: '7px 14px', border: `1px solid ${T.border}`, color: T.inkMid,
+                  transition: 'all 0.2s',
+                }}
+                  onMouseEnter={e => { e.currentTarget.style.background = T.ink; e.currentTarget.style.color = T.ivory; e.currentTarget.style.borderColor = T.ink; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = T.inkMid; e.currentTarget.style.borderColor = T.border; }}
+                >{s.num} {s.title}</a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Tiles */}
+      {SERVICES.map((s, i) => <ServiceTile key={s.id} s={s} flip={i % 2 === 1} />)}
+
+      {/* CTA */}
+      <section style={{ background: T.ink, padding: '80px 48px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <Label light>Not sure where to start?</Label>
+            <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(36px, 5vw, 60px)', lineHeight: 0.92, letterSpacing: '-0.01em', textTransform: 'uppercase', color: '#f2ede4' }}>
+              Tell us what<br />you need.
+            </h2>
+          </div>
+          <a href="index.html#contact" style={{
+            fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '13px',
+            letterSpacing: '0.14em', textTransform: 'uppercase',
+            border: '1px solid rgba(242,237,228,0.4)', color: '#f2ede4', padding: '14px 28px',
+            transition: 'all 0.2s', display: 'inline-block', flexShrink: 0,
+          }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#f2ede4'; e.currentTarget.style.color = T.ink; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#f2ede4'; }}
+          >Start a conversation</a>
+        </div>
+      </section>
+
+      <Footer />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<ServicesPage />);
+</script>
+<div id="root"></div>
+
+<script>
+(function() {
+  // Inject hamburger toggle once DOM is ready
+  function initMobileNav() {
+    var nav = document.querySelector('nav');
+    if (!nav || nav.dataset.mobileInit) return;
+    nav.dataset.mobileInit = '1';
+    var links = nav.querySelector('div:last-child');
+    if (!links) return;
+    links.classList.add('mobile-nav-links');
+    var btn = document.createElement('button');
+    btn.className = 'mobile-nav-toggle';
+    btn.setAttribute('aria-label', 'Menu');
+    btn.innerHTML = '<span></span><span></span><span></span>';
+    btn.addEventListener('click', function() {
+      links.classList.toggle('open');
+    });
+    // insert button before the links div
+    nav.insertBefore(btn, links);
+    // close on link click
+    links.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() { links.classList.remove('open'); });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(initMobileNav, 800); });
+  } else {
+    setTimeout(initMobileNav, 800);
+  }
+})();
+</script>
+
+<script src="mobile-nav.js"></script>
+</body>
+</html>

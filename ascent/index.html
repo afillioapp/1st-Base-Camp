@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASCENT — Academy by 1st Base Camp</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../brand/favicons/ascent-favicon-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="../brand/favicons/ascent-favicon-512.png">
+<link rel="apple-touch-icon" href="../brand/favicons/ascent-favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800;900&family=Barlow:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #0d0f14; color: #f0ece3; font-family: 'Barlow', sans-serif; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: rgba(255,255,255,0.15); }
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: #0d0f14; }
+  ::-webkit-scrollbar-thumb { background: #2a2d35; }
+</style>
+<style id="responsive">
+  /* ── Mobile responsiveness ── */
+  @media (max-width: 900px) {
+    /* nav */
+    nav { padding: 0 20px !important; }
+    nav > div:last-child { display: none !important; }
+    nav > a[href], nav > div:first-child { display: flex !important; }
+
+    /* generic 2-col → 1-col grid */
+    [style*="grid-template-columns: 1fr 1fr"],
+    [style*="gridTemplateColumns: '1fr 1fr'"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(2"],
+    [style*="gridTemplateColumns: 'repeat(2"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(3"],
+    [style*="gridTemplateColumns: 'repeat(3"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(4"],
+    [style*="gridTemplateColumns: 'repeat(4"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    /* hero text size */
+    h1 { font-size: clamp(40px, 10vw, 80px) !important; }
+    h2 { font-size: clamp(32px, 8vw, 64px) !important; }
+    /* section padding */
+    section, footer, nav { padding-left: 20px !important; padding-right: 20px !important; }
+    /* hero full-height on mobile */
+    section[style*="height: 100vh"] { min-height: 560px !important; }
+  }
+
+  @media (max-width: 600px) {
+    [style*="grid-template-columns: repeat(3"],
+    [style*="gridTemplateColumns: 'repeat(3"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(4"],
+    [style*="gridTemplateColumns: 'repeat(4"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    [style*="padding: '72px 48px"],
+    [style*="padding: '80px 48px"],
+    [style*="padding: '120px 80px"],
+    [style*="padding: '64px 48px"] {
+      padding: 40px 20px !important;
+    }
+    /* Horizontal scrollers stay scrollable */
+    .scroller { overflow-x: auto !important; }
+  }
+
+  /* Hamburger mobile nav */
+  .mobile-nav-toggle {
+    display: none;
+  }
+  @media (max-width: 900px) {
+    .mobile-nav-toggle {
+      display: flex !important;
+      flex-direction: column;
+      gap: 5px;
+      padding: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-left: auto;
+    }
+    .mobile-nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: #1a1814;
+    }
+    .mobile-nav-links {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background: rgba(242,237,228,0.98);
+      backdrop-filter: blur(12px);
+      padding: 16px 20px;
+      border-bottom: 1px solid #d4cdc0;
+      flex-direction: column;
+      gap: 0;
+      z-index: 199;
+    }
+    .mobile-nav-links.open {
+      display: flex;
+    }
+    .mobile-nav-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1a1814;
+      padding: 14px 0;
+      border-bottom: 1px solid #d4cdc0;
+      text-decoration: none;
+    }
+    .mobile-nav-links a:last-child { border-bottom: none; }
+  }
+</style>
+<link rel="stylesheet" href="../responsive.css">
+</head>
+<body>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+const A = {
+  bg: '#0d0f14',
+  bg2: '#13161e',
+  surface: '#1a1e28',
+  cream: '#f0ece3',
+  creamMid: 'rgba(240,236,227,0.55)',
+  creamLight: 'rgba(240,236,227,0.28)',
+  border: 'rgba(240,236,227,0.1)',
+  accent: '#4a7fa5',   /* icy blue from the photo */
+  accentLight: 'rgba(74,127,165,0.18)',
+};
+
+/* ── ASCENT Nav ── */
+function AscentNav({ scrolled }) {
+  const links = [
+    { label: 'Program', href: '#program' },
+    { label: 'Tracks', href: '#tracks' },
+    { label: 'Partners', href: '#partners' },
+    { label: 'Enroll', href: '#enroll' },
+  ];
+  return (
+    <nav style={{
+      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200,
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      padding: '0 48px', height: '60px',
+      background: scrolled ? 'rgba(13,15,20,0.96)' : 'transparent',
+      backdropFilter: scrolled ? 'blur(16px)' : 'none',
+      borderBottom: scrolled ? `1px solid ${A.border}` : '1px solid transparent',
+      transition: 'all 0.4s ease',
+    }}>
+      {/* Back to 1BC */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+        <a href="../index.html" style={{
+          fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em',
+          textTransform: 'uppercase', color: A.creamLight,
+          display: 'flex', alignItems: 'center', gap: '8px',
+          transition: 'color 0.2s',
+        }}
+          onMouseEnter={e => e.currentTarget.style.color = A.creamMid}
+          onMouseLeave={e => e.currentTarget.style.color = A.creamLight}
+        >
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+            <path d="M7 1L3 5L7 9" stroke="currentColor" strokeWidth="1.2" />
+          </svg>
+          1st Base Camp
+        </a>
+        <span style={{ color: A.border, fontSize: '12px' }}>|</span>
+        <img src="../brand/ascent/ascent-horizontal-cream.png" alt="ASCENT" style={{ height: '24px', width: 'auto', display: 'block' }} />
+      </div>
+      <div style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
+        {links.map(l => (
+          <a key={l.label} href={l.href} style={{
+            fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 500,
+            fontSize: '13px', letterSpacing: '0.1em', textTransform: 'uppercase',
+            color: A.creamLight, transition: 'color 0.2s',
+          }}
+            onMouseEnter={e => e.currentTarget.style.color = A.cream}
+            onMouseLeave={e => e.currentTarget.style.color = A.creamLight}
+          >{l.label}</a>
+        ))}
+        <a href="#enroll" style={{
+          fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
+          fontSize: '12px', letterSpacing: '0.14em', textTransform: 'uppercase',
+          border: `1px solid ${A.accent}`, color: A.accent,
+          padding: '7px 18px', transition: 'all 0.2s',
+        }}
+          onMouseEnter={e => { e.currentTarget.style.background = A.accent; e.currentTarget.style.color = A.bg; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = A.accent; }}
+        >Apply now</a>
+      </div>
+    </nav>
+  );
+}
+
+/* ── Hero ── */
+function AscentHero() {
+  return (
+    <section style={{ position: 'relative', height: '100vh', minHeight: '680px', overflow: 'hidden' }}>
+      {/* Photo */}
+      <img src="../uploads/photo_1.jpg" alt="Climber and dog before a massive snow peak"
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 20%' }} />
+      {/* Dark overlay — preserve the icy blue of the photo */}
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,15,20,0.3) 0%, rgba(13,15,20,0.1) 45%, rgba(13,15,20,0.82) 100%)' }}></div>
+
+      {/* Content */}
+      <div style={{
+        position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
+        justifyContent: 'flex-end', padding: '0 48px 64px',
+      }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0', alignItems: 'flex-end' }}>
+          <div>
+            <div style={{
+              fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.18em',
+              textTransform: 'uppercase', color: 'rgba(240,236,227,0.45)', marginBottom: '24px',
+              display: 'flex', alignItems: 'center', gap: '10px',
+            }}>
+              <span style={{ width: '24px', height: '1px', background: 'rgba(240,236,227,0.3)', display: 'inline-block' }}></span>
+              An Academy by 1st Base Camp
+            </div>
+            <img src="../brand/ascent/ascent-horizontal-cream.png" alt="ASCENT"
+              style={{ height: 'clamp(96px, 14vw, 200px)', width: 'auto', display: 'block', filter: 'drop-shadow(0 2px 32px rgba(13,15,20,0.4))' }} />
+          </div>
+          <div style={{ paddingLeft: '48px', paddingBottom: '8px' }}>
+            <p style={{
+              fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '20px',
+              lineHeight: 1.7, color: 'rgba(240,236,227,0.82)',
+              borderLeft: '2px solid rgba(240,236,227,0.2)', paddingLeft: '28px',
+              marginBottom: '40px', maxWidth: '400px',
+              textShadow: '0 1px 12px rgba(13,15,20,0.5)',
+            }}>
+              A structured academy for founders and operators who are building ventures and expanding across borders.
+            </p>
+            <div style={{ paddingLeft: '30px', display: 'flex', gap: '16px', alignItems: 'center' }}>
+              <a href="#enroll" style={{
+                fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
+                fontSize: '13px', letterSpacing: '0.14em', textTransform: 'uppercase',
+                background: '#f0ece3', color: A.bg, padding: '14px 28px',
+                transition: 'opacity 0.2s', display: 'inline-block',
+              }}
+                onMouseEnter={e => e.currentTarget.style.opacity = '0.88'}
+                onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+              >Apply now</a>
+              <a href="#program" style={{
+                fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 500,
+                fontSize: '13px', letterSpacing: '0.12em', textTransform: 'uppercase',
+                color: 'rgba(240,236,227,0.55)',
+                borderBottom: '1px solid rgba(240,236,227,0.2)', paddingBottom: '3px',
+                transition: 'color 0.2s',
+              }}
+                onMouseEnter={e => e.currentTarget.style.color = '#f0ece3'}
+                onMouseLeave={e => e.currentTarget.style.color = 'rgba(240,236,227,0.55)'}
+              >Explore the program →</a>
+            </div>
+          </div>
+        </div>
+        <div style={{
+          display: 'flex', justifyContent: 'space-between',
+          marginTop: '40px', paddingTop: '20px',
+          borderTop: '1px solid rgba(240,236,227,0.1)',
+        }}>
+          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(240,236,227,0.3)' }}>Toronto · Dubai</span>
+          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(240,236,227,0.3)' }}>Practitioner-grade curriculum</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Program overview ── */
+function ProgramSection() {
+  const pillars = [
+    { num: '01', title: 'Operator-Grade', desc: 'Built around real decisions founders face in the field — not theoretical frameworks or classroom simulations.' },
+    { num: '02', title: 'Cross-Border Focus', desc: 'Curriculum designed specifically for the Americas-MENA corridor. Regional knowledge embedded in every module.' },
+    { num: '03', title: 'Institutional Backing', desc: 'Co-designed with Tier-1 university partners. Accredited rigor, practitioner delivery.' },
+    { num: '04', title: 'Cohort Model', desc: 'Small, selective cohorts of 20–40 participants. Peer learning as valuable as the curriculum.' },
+  ];
+  return (
+    <section id="program" style={{ background: A.bg, borderBottom: `1px solid ${A.border}` }}>
+      <div style={{ padding: '80px 48px 64px', borderBottom: `1px solid ${A.border}`, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'end' }}>
+        <div>
+          <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: A.creamLight, marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ width: '24px', height: '1px', background: A.creamLight, display: 'inline-block' }}></span>
+            The Program
+          </div>
+          <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(48px, 6vw, 80px)', lineHeight: 0.9, letterSpacing: '-0.01em', textTransform: 'uppercase', color: A.cream }}>
+            Not a course.<br />A formation.
+          </h2>
+        </div>
+        <div style={{ paddingBottom: '8px' }}>
+          <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '18px', lineHeight: 1.8, color: A.creamMid, borderLeft: `2px solid ${A.border}`, paddingLeft: '28px' }}>
+            ASCENT is structured around the decisions that determine whether a venture survives its first market. Every module is built by operators who have made those decisions — not academics who have studied them.
+          </p>
+        </div>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
+        {pillars.map((p, i) => (
+          <div key={i} style={{
+            padding: '48px 40px',
+            borderRight: i < pillars.length - 1 ? `1px solid ${A.border}` : 'none',
+            transition: 'background 0.2s', cursor: 'default',
+          }}
+            onMouseEnter={e => e.currentTarget.style.background = A.bg2}
+            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+          >
+            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', color: A.creamLight, marginBottom: '20px' }}>{p.num}</div>
+            <h3 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '22px', letterSpacing: '0.04em', textTransform: 'uppercase', color: A.cream, marginBottom: '12px' }}>{p.title}</h3>
+            <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '13px', lineHeight: 1.75, color: A.creamMid }}>{p.desc}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ── Tracks ── */
+function TracksSection() {
+  const [active, setActive] = useState(0);
+  const tracks = [
+    {
+      num: '01', title: 'AI Enablement for Builders & Construction',
+      tagline: 'Practical AI adoption for the Canadian construction sector.',
+      modules: ['AI Fundamentals for Construction Leaders', 'Estimating & Bid Automation', 'AI-Assisted Project Scheduling & Risk', 'Site Safety & Computer Vision', 'Procurement & Supply-Chain Intelligence', 'Building an AI Adoption Roadmap'],
+      duration: '6 weeks', format: 'Hybrid · Canada',
+    },
+    {
+      num: '02', title: 'Agentic AI & Robotics in Manufacturing',
+      tagline: 'Deploying autonomous agents and robotics on the factory floor.',
+      modules: ['Foundations of Agentic AI', 'Robotic Process & Physical Automation', 'Human–Robot Collaboration & Safety', 'Predictive Maintenance & Digital Twins', 'Orchestrating Multi-Agent Systems', 'ROI & Scale-Up Strategy'],
+      duration: '8 weeks', format: 'Hybrid · Intensive',
+    },
+    {
+      num: '03', title: 'Data Governance for SMEs',
+      tagline: 'Turning data into a governed, trusted asset for smaller enterprises.',
+      modules: ['Data Governance Foundations for SMEs', 'Privacy, PIPEDA & Regulatory Compliance', 'Data Quality & Master Data Management', 'Access, Security & Risk Controls', 'Building a Lightweight Governance Framework', 'From Governance to AI-Readiness'],
+      duration: '5 weeks', format: 'Online · Cohort',
+    },
+    {
+      num: '04', title: 'Fraud & Misuse Management and Prevention',
+      tagline: 'Detecting, managing, and preventing fraud and misuse at scale.',
+      modules: ['Fraud Typologies & Threat Landscape', 'AI-Driven Detection & Anomaly Models', 'Transaction Monitoring & Case Management', 'Identity, KYC & Access Misuse', 'Investigations & Response Playbooks', 'Building a Prevention-First Culture'],
+      duration: '6 weeks', format: 'Hybrid',
+    },
+  ];
+
+  return (
+    <section id="tracks" style={{ background: A.bg2, borderBottom: `1px solid ${A.border}` }}>
+      <div style={{ padding: '80px 48px 56px', borderBottom: `1px solid ${A.border}` }}>
+        <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: A.creamLight, marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <span style={{ width: '24px', height: '1px', background: A.creamLight, display: 'inline-block' }}></span>
+          Curriculum
+        </div>
+        <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(48px, 6vw, 80px)', lineHeight: 0.9, letterSpacing: '-0.01em', textTransform: 'uppercase', color: A.cream }}>Four Tracks.</h2>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '280px 1fr' }}>
+        {/* Track selector */}
+        <div style={{ borderRight: `1px solid ${A.border}` }}>
+          {tracks.map((t, i) => (
+            <div key={i} onClick={() => setActive(i)} style={{
+              padding: '28px 40px',
+              borderBottom: `1px solid ${A.border}`,
+              cursor: 'pointer',
+              background: active === i ? A.surface : 'transparent',
+              borderLeft: `2px solid ${active === i ? A.accent : 'transparent'}`,
+              transition: 'all 0.2s',
+            }}>
+              <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.12em', color: A.creamLight, marginBottom: '6px' }}>{t.num}</div>
+              <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '18px', letterSpacing: '0.04em', textTransform: 'uppercase', color: active === i ? A.cream : A.creamMid }}>{t.title}</div>
+            </div>
+          ))}
+        </div>
+        {/* Track detail */}
+        <div style={{ padding: '48px 56px' }}>
+          <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: A.accent, marginBottom: '16px' }}>Track {tracks[active].num}</div>
+          <h3 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(36px, 4vw, 56px)', lineHeight: 0.9, letterSpacing: '-0.01em', textTransform: 'uppercase', color: A.cream, marginBottom: '16px' }}>{tracks[active].title}</h3>
+          <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '16px', color: A.creamMid, marginBottom: '40px' }}>{tracks[active].tagline}</p>
+          <div style={{ marginBottom: '40px' }}>
+            {tracks[active].modules.map((m, i) => (
+              <div key={i} style={{
+                padding: '14px 0', borderBottom: `1px solid ${A.border}`,
+                display: 'flex', gap: '16px', alignItems: 'flex-start',
+              }}>
+                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', color: A.creamLight, marginTop: '3px', flexShrink: 0 }}>0{i + 1}</span>
+                <span style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 400, fontSize: '15px', color: A.cream }}>{m}</span>
+              </div>
+            ))}
+          </div>
+          <div style={{ display: 'flex', gap: '40px' }}>
+            {[['Duration', tracks[active].duration], ['Format', tracks[active].format]].map(([k, v]) => (
+              <div key={k}>
+                <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: A.creamLight, marginBottom: '4px' }}>{k}</div>
+                <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '18px', letterSpacing: '0.04em', textTransform: 'uppercase', color: A.cream }}>{v}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Partners ── */
+function PartnersSection() {
+  return (
+    <section id="partners" style={{ background: A.bg, borderBottom: `1px solid ${A.border}` }}>
+      {/* Photo band */}
+      <div style={{ position: 'relative', height: '38vw', maxHeight: '480px', overflow: 'hidden' }}>
+        <img src="../uploads/photo_9.jpg" alt=""
+          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 25%', filter: 'brightness(0.55) grayscale(20%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 40%, rgba(13,15,20,0.9) 100%)' }}></div>
+        <div style={{ position: 'absolute', bottom: '48px', left: '48px', right: '48px' }}>
+          <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(48px, 7vw, 96px)', lineHeight: 0.88, letterSpacing: '-0.01em', textTransform: 'uppercase', color: '#f0ece3' }}>Designed with<br />leading institutions.</h2>
+        </div>
+      </div>
+      <div style={{ padding: '56px 48px', display: 'flex', alignItems: 'center', gap: '56px', flexWrap: 'wrap', borderBottom: `1px solid ${A.border}` }}>
+        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.16em', textTransform: 'uppercase', color: A.creamLight, whiteSpace: 'nowrap' }}>University Partners</span>
+        {['University Partner A', 'University Partner B', 'Research Institute C', 'Academic Network D'].map((p, i) => (
+          <span key={i} style={{
+            fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 600, fontSize: '18px', letterSpacing: '0.06em', textTransform: 'uppercase',
+            color: 'rgba(240,236,227,0.22)', cursor: 'pointer', transition: 'color 0.2s',
+          }}
+            onMouseEnter={e => e.currentTarget.style.color = 'rgba(240,236,227,0.6)'}
+            onMouseLeave={e => e.currentTarget.style.color = 'rgba(240,236,227,0.22)'}
+          >{p}</span>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ── Enroll ── */
+function EnrollSection() {
+  const [form, setForm] = useState({ name: '', org: '', email: '', track: '', background: '' });
+  const [submitted, setSubmitted] = useState(false);
+  const [focused, setFocused] = useState(null);
+  const tracks = ['AI Enablement for Builders & Construction', 'Agentic AI & Robotics in Manufacturing', 'Data Governance for SMEs', 'Fraud & Misuse Management and Prevention', 'Full Program'];
+
+  const inputStyle = (id) => ({
+    fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '15px',
+    background: 'transparent', border: 'none',
+    borderBottom: `1px solid ${focused === id ? 'rgba(240,236,227,0.5)' : A.border}`,
+    color: A.cream, padding: '10px 0', width: '100%', outline: 'none',
+    transition: 'border-color 0.2s',
+  });
+
+  return (
+    <section id="enroll" style={{ background: A.bg2, borderBottom: `1px solid ${A.border}` }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+        <div style={{ padding: '80px 48px', borderRight: `1px solid ${A.border}` }}>
+          <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: A.creamLight, marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ width: '24px', height: '1px', background: A.creamLight, display: 'inline-block' }}></span>
+            Enrollment
+          </div>
+          <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(48px, 5.5vw, 76px)', lineHeight: 0.9, letterSpacing: '-0.01em', textTransform: 'uppercase', color: A.cream, marginBottom: '32px' }}>
+            Ready to<br />ascend?
+          </h2>
+          <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '15px', lineHeight: 1.85, color: A.creamMid, maxWidth: '340px', marginBottom: '48px' }}>
+            Applications are reviewed on a rolling basis. Cohorts are small and selective — we respond to every qualified application within 5 business days.
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            {[['Cohort size', '20–40 participants'], ['Intake', 'Twice yearly'], ['Location', 'Toronto · Dubai · Online']].map(([k, v]) => (
+              <div key={k} style={{ display: 'flex', justifyContent: 'space-between', borderBottom: `1px solid ${A.border}`, paddingBottom: '16px' }}>
+                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: A.creamLight }}>{k}</span>
+                <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 600, fontSize: '16px', letterSpacing: '0.04em', textTransform: 'uppercase', color: A.cream }}>{v}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ padding: '80px 48px' }}>
+          {submitted ? (
+            <div style={{ paddingTop: '40px' }}>
+              <h3 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: '56px', letterSpacing: '-0.01em', textTransform: 'uppercase', color: A.cream, marginBottom: '16px' }}>Application<br />received.</h3>
+              <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '14px', color: A.creamMid }}>We will review your application and respond within 5 business days.</p>
+            </div>
+          ) : (
+            <form style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '28px 32px' }} onSubmit={e => { e.preventDefault(); setSubmitted(true); }}>
+              {[['name', 'Full name', 'text', true], ['org', 'Organization', 'text', true]].map(([id, label, type, half]) => (
+                <div key={id}>
+                  <label style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: A.creamLight, display: 'block', marginBottom: '8px' }}>{label}</label>
+                  <input type={type} value={form[id]} onChange={e => setForm({ ...form, [id]: e.target.value })}
+                    onFocus={() => setFocused(id)} onBlur={() => setFocused(null)}
+                    style={inputStyle(id)} required />
+                </div>
+              ))}
+              <div style={{ gridColumn: 'span 2' }}>
+                <label style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: A.creamLight, display: 'block', marginBottom: '8px' }}>Email</label>
+                <input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}
+                  onFocus={() => setFocused('email')} onBlur={() => setFocused(null)}
+                  style={inputStyle('email')} required />
+              </div>
+              <div style={{ gridColumn: 'span 2' }}>
+                <label style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: A.creamLight, display: 'block', marginBottom: '12px' }}>Track of interest</label>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                  {tracks.map(t => (
+                    <button key={t} type="button" onClick={() => setForm({ ...form, track: t })} style={{
+                      fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 600, fontSize: '12px', letterSpacing: '0.08em', textTransform: 'uppercase',
+                      padding: '7px 14px',
+                      border: `1px solid ${form.track === t ? A.accent : A.border}`,
+                      background: form.track === t ? A.accentLight : 'transparent',
+                      color: form.track === t ? A.cream : A.creamMid,
+                      cursor: 'pointer', transition: 'all 0.2s',
+                    }}>{t}</button>
+                  ))}
+                </div>
+              </div>
+              <div style={{ gridColumn: 'span 2' }}>
+                <label style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: A.creamLight, display: 'block', marginBottom: '8px' }}>Your background</label>
+                <textarea value={form.background} onChange={e => setForm({ ...form, background: e.target.value })}
+                  onFocus={() => setFocused('background')} onBlur={() => setFocused(null)}
+                  rows={3} placeholder="Tell us about your venture, role, or why you're applying"
+                  style={{ ...inputStyle('background'), resize: 'none' }} />
+              </div>
+              <div style={{ gridColumn: 'span 2' }}>
+                <button type="submit" style={{
+                  fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '13px', letterSpacing: '0.14em', textTransform: 'uppercase',
+                  border: `1px solid ${A.accent}`, background: 'transparent', color: A.accent, padding: '14px 32px',
+                  cursor: 'pointer', transition: 'all 0.2s',
+                }}
+                  onMouseEnter={e => { e.currentTarget.style.background = A.accent; e.currentTarget.style.color = A.bg; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = A.accent; }}
+                >Submit application</button>
+              </div>
+            </form>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Footer ── */
+function AscentFooter() {
+  return (
+    <footer style={{ background: A.bg, borderTop: `1px solid ${A.border}`, padding: '32px 48px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <img src="../brand/ascent/ascent-horizontal-cream.png" alt="ASCENT" style={{ height: '20px', width: 'auto', display: 'block', opacity: 0.7 }} />
+          <span style={{ color: A.border }}>·</span>
+          <a href="../index.html" style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(240,236,227,0.2)', transition: 'color 0.2s' }}
+            onMouseEnter={e => e.currentTarget.style.color = 'rgba(240,236,227,0.5)'}
+            onMouseLeave={e => e.currentTarget.style.color = 'rgba(240,236,227,0.2)'}
+          >An academy by 1st Base Camp</a>
+        </div>
+        <div style={{ display: 'flex', gap: '28px' }}>
+          {[['Program', '#program'], ['Tracks', '#tracks'], ['Partners', '#partners'], ['Enroll', '#enroll']].map(([l, h]) => (
+            <a key={l} href={h} style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 500, fontSize: '12px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(240,236,227,0.2)', transition: 'color 0.2s' }}
+              onMouseEnter={e => e.currentTarget.style.color = 'rgba(240,236,227,0.5)'}
+              onMouseLeave={e => e.currentTarget.style.color = 'rgba(240,236,227,0.2)'}
+            >{l}</a>
+          ))}
+        </div>
+        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.08em', color: 'rgba(240,236,227,0.12)' }}>© 2026 First Base Camp</span>
+      </div>
+    </footer>
+  );
+}
+
+/* ── App ── */
+function App() {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 80);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  return (
+    <>
+      <AscentNav scrolled={scrolled} />
+      <AscentHero />
+      <ProgramSection />
+      <TracksSection />
+      <PartnersSection />
+      <EnrollSection />
+      <AscentFooter />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+<div id="root"></div>
+
+<script>
+(function() {
+  // Inject hamburger toggle once DOM is ready
+  function initMobileNav() {
+    var nav = document.querySelector('nav');
+    if (!nav || nav.dataset.mobileInit) return;
+    nav.dataset.mobileInit = '1';
+    var links = nav.querySelector('div:last-child');
+    if (!links) return;
+    links.classList.add('mobile-nav-links');
+    var btn = document.createElement('button');
+    btn.className = 'mobile-nav-toggle';
+    btn.setAttribute('aria-label', 'Menu');
+    btn.innerHTML = '<span></span><span></span><span></span>';
+    btn.addEventListener('click', function() {
+      links.classList.toggle('open');
+    });
+    // insert button before the links div
+    nav.insertBefore(btn, links);
+    // close on link click
+    links.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() { links.classList.remove('open'); });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(initMobileNav, 800); });
+  } else {
+    setTimeout(initMobileNav, 800);
+  }
+})();
+</script>
+
+<script src="../mobile-nav.js"></script>
+</body>
+</html>

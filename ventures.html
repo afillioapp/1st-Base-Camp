@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ventures — 1st Base Camp</title>
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicons/1bc-favicon-32.png">
+<link rel="apple-touch-icon" href="brand/favicons/1bc-favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #f2ede4; color: #1a1814; font-family: 'Barlow', sans-serif; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: #d4c9b0; }
+  ::-webkit-scrollbar { width: 3px; } ::-webkit-scrollbar-track { background: #f2ede4; } ::-webkit-scrollbar-thumb { background: #c8c0b0; }
+</style>
+<style id="responsive">
+  /* ── Mobile responsiveness ── */
+  @media (max-width: 900px) {
+    /* nav */
+    nav { padding: 0 20px !important; }
+    nav > div:last-child { display: none !important; }
+    nav > a[href], nav > div:first-child { display: flex !important; }
+
+    /* generic 2-col → 1-col grid */
+    [style*="grid-template-columns: 1fr 1fr"],
+    [style*="gridTemplateColumns: '1fr 1fr'"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(2"],
+    [style*="gridTemplateColumns: 'repeat(2"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(3"],
+    [style*="gridTemplateColumns: 'repeat(3"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(4"],
+    [style*="gridTemplateColumns: 'repeat(4"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    /* hero text size */
+    h1 { font-size: clamp(40px, 10vw, 80px) !important; }
+    h2 { font-size: clamp(32px, 8vw, 64px) !important; }
+    /* section padding */
+    section, footer, nav { padding-left: 20px !important; padding-right: 20px !important; }
+    /* hero full-height on mobile */
+    section[style*="height: 100vh"] { min-height: 560px !important; }
+  }
+
+  @media (max-width: 600px) {
+    [style*="grid-template-columns: repeat(3"],
+    [style*="gridTemplateColumns: 'repeat(3"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns: repeat(4"],
+    [style*="gridTemplateColumns: 'repeat(4"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    [style*="padding: '72px 48px"],
+    [style*="padding: '80px 48px"],
+    [style*="padding: '120px 80px"],
+    [style*="padding: '64px 48px"] {
+      padding: 40px 20px !important;
+    }
+    /* Horizontal scrollers stay scrollable */
+    .scroller { overflow-x: auto !important; }
+  }
+
+  /* Hamburger mobile nav */
+  .mobile-nav-toggle {
+    display: none;
+  }
+  @media (max-width: 900px) {
+    .mobile-nav-toggle {
+      display: flex !important;
+      flex-direction: column;
+      gap: 5px;
+      padding: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-left: auto;
+    }
+    .mobile-nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: #1a1814;
+    }
+    .mobile-nav-links {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background: rgba(242,237,228,0.98);
+      backdrop-filter: blur(12px);
+      padding: 16px 20px;
+      border-bottom: 1px solid #d4cdc0;
+      flex-direction: column;
+      gap: 0;
+      z-index: 199;
+    }
+    .mobile-nav-links.open {
+      display: flex;
+    }
+    .mobile-nav-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1a1814;
+      padding: 14px 0;
+      border-bottom: 1px solid #d4cdc0;
+      text-decoration: none;
+    }
+    .mobile-nav-links a:last-child { border-bottom: none; }
+  }
+</style>
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+<script type="text/babel" src="shared.js"></script>
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+// Domains (mirror of domains.html)
+const DOMAINS = [
+  { id: 'fintech', short: 'FinTech', name: 'FinTech & Credit Infrastructure' },
+  { id: 'blockchain', short: 'Web3', name: 'Blockchain, Web3 & Digital Assets' },
+  { id: 'ai', short: 'AI & Data', name: 'Applied AI & Data Infrastructure' },
+  { id: 'foodtech', short: 'FoodTech', name: 'FoodTech' },
+  { id: 'healthtech', short: 'HealthTech', name: 'HealthTech, Cosmeceuticals & Longevity' },
+  { id: 'commerce', short: 'Commerce', name: 'Digital Commerce & Social Retail' },
+  { id: 'market', short: 'Market Expansion', name: 'Market Expansion & Venture Enablement' },
+];
+
+// Services tags (mirror of services list on homepage)
+// Use short labels for compact display on cards
+// Full names: Incubation, Legal & Corporate Structure, Advisory & Management,
+// Technical Outsourcing, Channel & Sales Enablement, New Market Entry
+
+const ventures = [
+  {
+    id: 'ascent', name: 'ASCENT',
+    domain: 'ai',
+    logo: 'brand/ascent/ascent-horizontal-ink.png',
+    href: 'ascent/index.html',
+    desc: 'Our academy for applied AI and enterprise capability — practitioner-grade programs across construction, manufacturing, data governance, and fraud prevention.',
+    services: ['Incubation', 'Advisory & Management', 'Technical Outsourcing'],
+  },
+  {
+    id: 'pistacio', name: 'Pistac.io',
+    domain: 'fintech',
+    logo: 'brand/ventures/pistacio-black.png',
+    desc: 'B2B credit infrastructure that treats commercial credit as a network of obligations, liquidity, and trust — not just an invoice or payment workflow.',
+    services: ['Incubation', 'Legal & Structure', 'Advisory & Management'],
+  },
+  {
+    id: 'altisnexis', name: 'AltisNexsys',
+    domain: 'ai',
+    logo: 'brand/ventures/altisnexis-black.png',
+    desc: 'The governed data-access layer between enterprise systems and AI — metadata, virtualization, and operational governance that makes AI deployable.',
+    services: ['Incubation', 'Technical Outsourcing', 'Advisory & Management'],
+  },
+  {
+    id: 'beaulogica', name: 'Beaulogica',
+    domain: 'healthtech',
+    wordmark: true,
+    desc: 'Ingredient intelligence for science-backed skincare — a structured data foundation that helps formulators reason about actives, excipients, and efficacy.',
+    services: ['Incubation', 'Channel & Sales', 'New Market Entry'],
+  },
+];
+
+/* Logo mark — real logo, typographic wordmark, or geometric placeholder */
+function LogoMark({ name, logo, wordmark, size = 96 }) {
+  if (logo) {
+    return (
+      <div style={{ width: size + 60, height: size, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <img src={logo} alt={name} style={{ maxHeight: size * 0.62, maxWidth: size + 56, width: 'auto', objectFit: 'contain' }} />
+      </div>
+    );
+  }
+  if (wordmark) {
+    return (
+      <div style={{ width: size + 60, height: size, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+        <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '30px', letterSpacing: '0.01em', color: T.ink, lineHeight: 1 }}>{name}</span>
+      </div>
+    );
+  }
+  const label = (name.split('/').pop() || name).trim();
+  const initials = label.split(' ').filter(Boolean).map(w => w[0]).join('').slice(0, 2).toUpperCase();
+  return (
+    <div style={{
+      width: size, height: size, flexShrink: 0,
+      border: `1px solid ${T.border}`,
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      position: 'relative', background: T.ivory,
+    }}>
+      {[
+        { top: -1, left: -1, bT: 2, bL: 2 },
+        { top: -1, right: -1, bT: 2, bR: 2 },
+        { bottom: -1, left: -1, bB: 2, bL: 2 },
+        { bottom: -1, right: -1, bB: 2, bR: 2 },
+      ].map((c, i) => (
+        <div key={i} style={{
+          position: 'absolute', width: '10px', height: '10px',
+          ...(c.top !== undefined ? { top: c.top } : {}),
+          ...(c.bottom !== undefined ? { bottom: c.bottom } : {}),
+          ...(c.left !== undefined ? { left: c.left } : {}),
+          ...(c.right !== undefined ? { right: c.right } : {}),
+          borderTop: c.bT ? `2px solid ${T.ink}` : 'none',
+          borderBottom: c.bB ? `2px solid ${T.ink}` : 'none',
+          borderLeft: c.bL ? `2px solid ${T.ink}` : 'none',
+          borderRight: c.bR ? `2px solid ${T.ink}` : 'none',
+        }}></div>
+      ))}
+      <span style={{
+        fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900,
+        fontSize: size > 80 ? '28px' : '22px',
+        letterSpacing: '0.04em', color: T.ink,
+      }}>{initials || 'V'}</span>
+    </div>
+  );
+}
+
+function VenturesPage() {
+  // Read ?domain=xxx from URL once at mount
+  const [filter, setFilter] = useState(() => {
+    try {
+      const p = new URLSearchParams(window.location.search);
+      const d = p.get('domain');
+      return d || 'All';
+    } catch (e) { return 'All'; }
+  });
+
+  const filtered = filter === 'All' ? ventures : ventures.filter(v => v.domain === filter);
+
+  const filterOptions = [{ id: 'All', short: 'All' }, ...DOMAINS];
+
+  return (
+    <>
+      <Nav activePage="Ventures" />
+
+      {/* Header */}
+      <section style={{ paddingTop: '60px', background: T.ivory }}>
+        <div style={{ padding: '80px 48px 48px', borderBottom: `1px solid ${T.border}`, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'end' }}>
+          <div>
+            <Label>Portfolio</Label>
+            <h1 style={{
+              fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900,
+              fontSize: 'clamp(60px, 8vw, 104px)', lineHeight: 0.9,
+              letterSpacing: '-0.01em', textTransform: 'uppercase', color: T.ink,
+            }}>What We're<br />Building.</h1>
+          </div>
+          <div style={{ paddingBottom: '8px' }}>
+            <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '18px', lineHeight: 1.8, color: T.inkMid, borderLeft: `2px solid ${T.border}`, paddingLeft: '28px' }}>
+              Ventures we build, co-build, or actively support. Each is anchored in one of our seven domains and engaged through specific services from our platform.
+            </p>
+          </div>
+        </div>
+
+        {/* Filter bar */}
+        <div style={{ padding: '32px 48px', borderBottom: `1px solid ${T.border}`, display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: T.inkLight, marginRight: '8px' }}>Filter by domain</span>
+          {filterOptions.map(d => (
+            <button key={d.id} onClick={() => setFilter(d.id)} style={{
+              fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 600,
+              fontSize: '12px', letterSpacing: '0.08em', textTransform: 'uppercase',
+              padding: '7px 14px',
+              border: `1px solid ${filter === d.id ? T.ink : T.border}`,
+              background: filter === d.id ? T.ink : 'transparent',
+              color: filter === d.id ? T.ivory : T.inkMid,
+              cursor: 'pointer', transition: 'all 0.2s',
+            }}>{d.short}</button>
+          ))}
+        </div>
+
+        {/* Ventures grid */}
+        <div style={{ borderBottom: `1px solid ${T.border}` }}>
+          {filtered.length === 0 ? (
+            <div style={{ padding: '80px 48px', textAlign: 'center', color: T.inkMid, fontFamily: "'Barlow', sans-serif", fontSize: '15px' }}>No ventures in this domain yet.</div>
+          ) : filtered.map((v, i) => {
+            const domain = DOMAINS.find(d => d.id === v.domain);
+            const linked = !!v.href;
+            const Wrap = linked ? 'a' : 'div';
+            const wrapProps = linked ? { href: v.href } : {};
+            return (
+              <Wrap key={v.id} {...wrapProps} style={{ textDecoration: 'none', display: 'block' }}>
+                <div style={{
+                  display: 'grid', gridTemplateColumns: '160px 1fr 240px',
+                  alignItems: 'center', gap: '40px',
+                  padding: '36px 48px',
+                  borderBottom: i < filtered.length - 1 ? `1px solid ${T.border}` : 'none',
+                  background: T.ivory, transition: 'background 0.2s', cursor: linked ? 'pointer' : 'default',
+                }}
+                  onMouseEnter={e => e.currentTarget.style.background = T.ivory2}
+                  onMouseLeave={e => e.currentTarget.style.background = T.ivory}
+                >
+                  {/* Logo */}
+                  <LogoMark name={v.name} logo={v.logo} wordmark={v.wordmark} size={96} />
+
+                  {/* Description + services */}
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', marginBottom: '10px' }}>
+                      <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '26px', letterSpacing: '0.02em', textTransform: 'uppercase', color: T.ink }}>{v.name}</span>
+                      <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', color: T.accent }}>· {domain ? domain.short : v.domain}</span>
+                    </div>
+                    <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '14px', lineHeight: 1.7, color: T.inkMid, marginBottom: '16px', maxWidth: '640px' }}>{v.desc}</p>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                      {v.services.map(s => (
+                        <span key={s} style={{
+                          fontFamily: "'DM Mono', monospace", fontSize: '10px',
+                          letterSpacing: '0.08em', textTransform: 'uppercase',
+                          color: T.inkMid, border: `1px solid ${T.border}`,
+                          padding: '4px 9px', background: T.ivory,
+                        }}>{s}</span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Domain block */}
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '12px' }}>
+                    <div style={{ textAlign: 'right' }}>
+                      <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: T.inkLight, marginBottom: '4px' }}>Domain</div>
+                      <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '15px', letterSpacing: '0.04em', textTransform: 'uppercase', color: T.ink, maxWidth: '200px', lineHeight: 1.1 }}>{domain ? domain.name : v.domain}</div>
+                    </div>
+                    <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '20px', color: T.border, opacity: linked ? 1 : 0 }}>→</span>
+                  </div>
+                </div>
+              </Wrap>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section style={{ background: T.ink, padding: '80px 48px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <Label light>Co-build with us</Label>
+            <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: 0.92, letterSpacing: '-0.01em', textTransform: 'uppercase', color: '#f2ede4' }}>Have a venture<br />worth building?</h2>
+          </div>
+          <a href="index.html#contact" style={{
+            fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '13px', letterSpacing: '0.14em', textTransform: 'uppercase',
+            border: '1px solid rgba(242,237,228,0.4)', color: '#f2ede4', padding: '14px 28px',
+            transition: 'all 0.2s', display: 'inline-block', flexShrink: 0,
+          }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#f2ede4'; e.currentTarget.style.color = T.ink; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#f2ede4'; }}
+          >Start a conversation</a>
+        </div>
+      </section>
+
+      <Footer />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<VenturesPage />);
+</script>
+<div id="root"></div>
+
+<script>
+(function() {
+  // Inject hamburger toggle once DOM is ready
+  function initMobileNav() {
+    var nav = document.querySelector('nav');
+    if (!nav || nav.dataset.mobileInit) return;
+    nav.dataset.mobileInit = '1';
+    var links = nav.querySelector('div:last-child');
+    if (!links) return;
+    links.classList.add('mobile-nav-links');
+    var btn = document.createElement('button');
+    btn.className = 'mobile-nav-toggle';
+    btn.setAttribute('aria-label', 'Menu');
+    btn.innerHTML = '<span></span><span></span><span></span>';
+    btn.addEventListener('click', function() {
+      links.classList.toggle('open');
+    });
+    // insert button before the links div
+    nav.insertBefore(btn, links);
+    // close on link click
+    links.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() { links.classList.remove('open'); });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(initMobileNav, 800); });
+  } else {
+    setTimeout(initMobileNav, 800);
+  }
+})();
+</script>
+
+<script src="mobile-nav.js"></script>
+</body>
+</html>

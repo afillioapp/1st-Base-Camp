@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Venture — 1st Base Camp</title>
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicons/1bc-favicon-32.png">
+<link rel="apple-touch-icon" href="brand/favicons/1bc-favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #f2ede4; color: #1a1814; font-family: 'Barlow', sans-serif; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: #d4c9b0; }
+  ::-webkit-scrollbar { width: 3px; } ::-webkit-scrollbar-track { background: #f2ede4; } ::-webkit-scrollbar-thumb { background: #c8c0b0; }
+</style>
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+<script type="text/babel" src="shared.js"></script>
+<script type="text/babel">
+
+const ventureData = {
+  ascent: {
+    num: '01', name: 'ASCENT Academy', category: 'Education', stage: 'Elevation', status: 'Active', region: 'Americas · MENA',
+    tagline: 'Training the next generation of cross-border operators.',
+    overview: 'ASCENT is the education and training arm of First Base Camp. It is a structured academy for founders, operators, and institutional partners who need practical, practitioner-grade knowledge about cross-border expansion, venture creation, and market leadership.',
+    problem: 'Most founder education is conceptual — it teaches frameworks, not decisions. Operators who are actually building ventures across new markets need something different: curriculum that reflects the real choices, tradeoffs, and pressures of expansion.',
+    solution: 'ASCENT delivers structured learning programs co-designed with Tier-1 university partners and delivered by practitioners with real operational experience. Every track is built around a specific decision set that founders face in the field.',
+    tracks: ['Venture Creation', 'Cross-Border Expansion', 'Capital & Structure', 'Leadership & Operations'],
+    metrics: [{ label: 'University Partners', value: '3+' }, { label: 'Program Tracks', value: '4' }, { label: 'Target Cohort', value: '20–40' }, { label: 'Regions', value: 'Americas · MENA' }],
+  },
+  'venture-b': {
+    num: '02', name: 'Venture B', category: 'Fintech', stage: 'Ignition', status: 'In Development', region: 'Americas · MENA',
+    tagline: 'Cross-border compliance infrastructure for the MENA-Americas corridor.',
+    overview: 'A B2B SaaS platform enabling seamless regulatory compliance and financial operations for companies expanding between MENA and North America. Built to reduce the friction cost of cross-border financial operations by an order of magnitude.',
+    problem: 'Companies expanding between MENA and North America face a fragmented, opaque compliance landscape. Regulatory misalignment, inconsistent reporting requirements, and slow banking rails create compounding delays and costs that disproportionately affect growth-stage ventures.',
+    solution: 'Venture B provides a unified compliance and financial operations layer that abstracts regional regulatory complexity. Automated reporting, jurisdictional mapping, and integrated banking rails allow operators to focus on growth rather than compliance.',
+    tracks: ['Regulatory Automation', 'Financial Operations Layer', 'Jurisdictional Mapping', 'Partner Banking Network'],
+    metrics: [{ label: 'Stage', value: 'Ignition' }, { label: 'Target Market', value: 'B2B SaaS' }, { label: 'Corridor', value: 'MENA ↔ Americas' }, { label: 'Status', value: 'In Development' }],
+  },
+  'venture-c': {
+    num: '03', name: 'Venture C', category: 'Market Entry', stage: 'Expansion', status: 'Active', region: 'Canada · GCC',
+    tagline: 'Consumer platform expanding from Canada into the Gulf Cooperation Council.',
+    overview: 'A consumer-facing platform that has achieved strong product-market fit in Canada and is executing a structured entry into GCC markets through 1st Base Camp\'s regional network and local channel partnerships.',
+    problem: 'Consumer platforms that succeed in Canada often struggle to replicate that success in the GCC due to differences in consumer behavior, payment infrastructure, and regulatory environment.',
+    solution: 'Venture C is entering the GCC with a localized product, regional payment integration, and a channel partnership model built on 1st Base Camp\'s on-the-ground presence in Dubai and broader MENA.',
+    tracks: ['Product Localization', 'Payment Infrastructure', 'Channel Partnership Model', 'Regulatory Compliance'],
+    metrics: [{ label: 'Stage', value: 'Expansion' }, { label: 'Home Market', value: 'Canada' }, { label: 'Target', value: 'GCC Markets' }, { label: 'Status', value: 'Active' }],
+  },
+};
+
+const defaultVenture = ventureData['ascent'];
+
+function VentureDetailPage() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id') || 'ascent';
+  const v = ventureData[id] || defaultVenture;
+
+  return (
+    <>
+      <Nav activePage="Ventures" />
+
+      {/* Breadcrumb + header */}
+      <section style={{ paddingTop: '60px', background: T.ivory }}>
+        <div style={{ padding: '48px 48px 0', borderBottom: `1px solid ${T.border}` }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '48px' }}>
+            <a href="ventures.html" style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: T.inkLight, transition: 'color 0.2s' }}
+              onMouseEnter={e => e.currentTarget.style.color = T.ink}
+              onMouseLeave={e => e.currentTarget.style.color = T.inkLight}
+            >← Ventures</a>
+            <span style={{ color: T.border }}>/</span>
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: T.inkLight }}>{v.name}</span>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '80px', alignItems: 'end', paddingBottom: '56px' }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
+                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', color: T.inkLight }}>{v.num}</span>
+                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: T.accent }}>{v.category}</span>
+              </div>
+              <h1 style={{
+                fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900,
+                fontSize: 'clamp(56px, 8vw, 96px)', lineHeight: 0.9,
+                letterSpacing: '-0.01em', textTransform: 'uppercase', color: T.ink,
+                marginBottom: '20px',
+              }}>{v.name}</h1>
+              <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '20px', lineHeight: 1.6, color: T.inkMid, maxWidth: '560px' }}>{v.tagline}</p>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', paddingBottom: '8px', minWidth: '200px' }}>
+              {[['Stage', v.stage], ['Status', v.status], ['Region', v.region]].map(([k, val]) => (
+                <div key={k}>
+                  <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: T.inkLight, marginBottom: '4px' }}>{k}</div>
+                  <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '18px', letterSpacing: '0.04em', textTransform: 'uppercase', color: T.ink }}>{val}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Photo band */}
+        <div style={{ height: '42vw', maxHeight: '500px', overflow: 'hidden', position: 'relative' }}>
+          <img src="uploads/photo_9.jpg" alt=""
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%', filter: 'grayscale(10%)' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 40%, rgba(26,24,20,0.5) 100%)' }}></div>
+        </div>
+      </section>
+
+      {/* Metrics bar */}
+      <section style={{ background: T.ink, borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${v.metrics.length}, 1fr)` }}>
+          {v.metrics.map((m, i) => (
+            <div key={i} style={{
+              padding: '36px 48px',
+              borderRight: i < v.metrics.length - 1 ? '1px solid rgba(255,255,255,0.07)' : 'none',
+            }}>
+              <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(242,237,228,0.3)', marginBottom: '8px' }}>{m.label}</div>
+              <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '28px', letterSpacing: '0.02em', textTransform: 'uppercase', color: '#f2ede4' }}>{m.value}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Overview + Problem/Solution */}
+      <section style={{ background: T.ivory, borderBottom: `1px solid ${T.border}` }}>
+        <div style={{ padding: '72px 48px', borderBottom: `1px solid ${T.border}` }}>
+          <Label>Overview</Label>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px' }}>
+            <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '18px', lineHeight: 1.85, color: T.inkMid }}>{v.overview}</p>
+            <div></div>
+          </div>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+          <div style={{ padding: '64px 48px', borderRight: `1px solid ${T.border}` }}>
+            <Label>The Problem</Label>
+            <h3 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '32px', letterSpacing: '0.02em', textTransform: 'uppercase', color: T.ink, marginBottom: '24px' }}>What we saw.</h3>
+            <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '15px', lineHeight: 1.85, color: T.inkMid }}>{v.problem}</p>
+          </div>
+          <div style={{ padding: '64px 48px' }}>
+            <Label>The Approach</Label>
+            <h3 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '32px', letterSpacing: '0.02em', textTransform: 'uppercase', color: T.ink, marginBottom: '24px' }}>What we built.</h3>
+            <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '15px', lineHeight: 1.85, color: T.inkMid }}>{v.solution}</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Components / Tracks */}
+      <section style={{ background: T.ivory2, borderBottom: `1px solid ${T.border}` }}>
+        <div style={{ padding: '72px 48px 48px', borderBottom: `1px solid ${T.border}` }}>
+          <Label>Components</Label>
+          <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(40px, 5vw, 60px)', lineHeight: 0.92, letterSpacing: '-0.01em', textTransform: 'uppercase', color: T.ink }}>Key Areas.</h2>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
+          {v.tracks.map((track, i) => (
+            <div key={i} style={{
+              padding: '40px',
+              borderRight: i < v.tracks.length - 1 ? `1px solid ${T.border}` : 'none',
+            }}>
+              <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', color: T.inkLight, marginBottom: '16px' }}>0{i + 1}</div>
+              <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '20px', letterSpacing: '0.04em', textTransform: 'uppercase', color: T.ink }}>{track}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section style={{ background: T.ink, padding: '80px 48px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <Label light>Get involved</Label>
+            <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: 0.92, letterSpacing: '-0.01em', textTransform: 'uppercase', color: '#f2ede4' }}>Interested in<br />this venture?</h2>
+          </div>
+          <div style={{ display: 'flex', gap: '16px', flexShrink: 0, alignItems: 'center' }}>
+            <a href="index.html#contact" style={{
+              fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '13px', letterSpacing: '0.14em', textTransform: 'uppercase',
+              border: '1px solid rgba(242,237,228,0.4)', color: '#f2ede4', padding: '14px 28px',
+              transition: 'all 0.2s', display: 'inline-block',
+            }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#f2ede4'; e.currentTarget.style.color = T.ink; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#f2ede4'; }}
+            >Start a conversation</a>
+            <a href="ventures.html" style={{
+              fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 500, fontSize: '13px', letterSpacing: '0.12em', textTransform: 'uppercase',
+              color: 'rgba(242,237,228,0.4)', borderBottom: '1px solid rgba(242,237,228,0.15)', paddingBottom: '3px',
+            }}
+              onMouseEnter={e => e.currentTarget.style.color = '#f2ede4'}
+              onMouseLeave={e => e.currentTarget.style.color = 'rgba(242,237,228,0.4)'}
+            >All ventures →</a>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<VentureDetailPage />);
+</script>
+<div id="root"></div>
+<script src="mobile-nav.js"></script>
+</body>
+</html>
