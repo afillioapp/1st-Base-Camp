@@ -263,31 +263,7 @@ function AboutPage() {
             <Label>People</Label>
             <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: 0.92, letterSpacing: '-0.01em', textTransform: 'uppercase', color: T.ink }}>The Team.</h2>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '16px' }}>
-            <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '14px', color: T.inkMid, maxWidth: '280px', textAlign: 'right' }}>Operators, domain experts, and institutional partners, working as one.</p>
-            <a href="https://www.linkedin.com/company/1st-base-camp/" target="_blank" rel="noopener noreferrer" aria-label="1st Base Camp on LinkedIn" style={{
-              display: 'inline-flex', alignItems: 'center', gap: '8px',
-              fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 500, fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: T.inkMid,
-              textDecoration: 'none', transition: 'color 0.2s',
-            }}
-              onMouseEnter={e => e.currentTarget.style.color = T.ink}
-              onMouseLeave={e => e.currentTarget.style.color = T.inkMid}
-            >
-              <span style={{
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                width: '34px', height: '34px', border: `1px solid ${T.border}`, flexShrink: 0,
-                transition: 'background 0.2s, border-color 0.2s',
-              }}
-                onMouseEnter={e => { e.currentTarget.style.background = T.ink; e.currentTarget.style.borderColor = T.ink; e.currentTarget.querySelector('svg').style.fill = T.ivory; }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = T.border; e.currentTarget.querySelector('svg').style.fill = T.ink; }}
-              >
-                <svg width="15" height="15" viewBox="0 0 24 24" style={{ fill: T.ink, transition: 'fill 0.2s' }}>
-                  <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S.02 4.88.02 3.5C.02 2.12 1.13 1 2.5 1s2.48 1.12 2.48 2.5zM.25 8h4.5v15.5H.25V8zm7.5 0h4.32v2.12h.06c.6-1.14 2.07-2.34 4.26-2.34 4.56 0 5.4 3 5.4 6.9v8.82h-4.5v-7.82c0-1.86-.03-4.26-2.6-4.26-2.6 0-3 2.03-3 4.13v7.95h-4.5V8z"/>
-                </svg>
-              </span>
-              Follow us on LinkedIn
-            </a>
-          </div>
+          <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: '14px', color: T.inkMid, maxWidth: '280px', textAlign: 'right' }}>Operators, domain experts, and institutional partners, working as one.</p>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: `repeat(${team.length}, 1fr)` }}>
           {team.map((m, i) => (
